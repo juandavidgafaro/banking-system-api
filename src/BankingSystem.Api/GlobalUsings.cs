@@ -1,0 +1,22 @@
+﻿global using BankingSystem.Api.Application.Commands;
+global using BankingSystem.Api.Application.DTOs;
+global using BankingSystem.Api.Application.ExceptionHandler;
+global using BankingSystem.Api.Application.Exceptions;
+global using BankingSystem.Api.Application.Factories;
+global using BankingSystem.Api.Application.Models;
+global using BankingSystem.Api.Application.Services;
+global using BankingSystem.Api.Extensions;
+global using BankingSystem.Domain.Entities;
+global using BankingSystem.Domain.Enums;
+global using BankingSystem.Domain.Exceptions;
+global using BankingSystem.Domain.Interfaces;
+global using BankingSystem.Domain.Strategies;
+global using BankingSystem.Infrastructure.Services;
+global using MediatR;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.OpenApi.Models;
+global using Newtonsoft.Json;
+global using System.ComponentModel.DataAnnotations;
+global using System.Net;
+global using System.Reflection;
+
