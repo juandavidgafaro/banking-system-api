@@ -1,6 +1,5 @@
 ﻿using BankingSystem.Api.Application.Factories.Implementations;
 using BankingSystem.Api.Middleware;
-using BankingSystem.Domain.Strategies;
 using BankingSystem.Domain.Strategies.Implementations;
 using BankingSystem.Infrastructure;
 
@@ -39,8 +38,7 @@ public static class WebApplicationExtension
         app.UseMiddleware<ErrorHandlerMiddleware>(new Dictionary<Type, IExceptionHandler>
             {
                 {typeof(BadRequestException), new BadRequestExceptionHandler() },
-                {typeof(DomainException), new DomainExceptionHandler() },
-                //{typeof(InfrastructureException), new InfrastructureExceptionHandler() },
+                {typeof(DomainException), new DomainExceptionHandler() }
             }
         );
         return app;

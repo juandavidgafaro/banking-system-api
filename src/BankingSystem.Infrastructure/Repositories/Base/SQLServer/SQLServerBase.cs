@@ -68,6 +68,15 @@ public class SqlServerBase<T> where T : class
 
         return isSuccessful;
     }
+    public async Task<T> SingleInsert<T>(string sql, object parameters)
+    {
+        using (SqlConnection conn = new SqlConnection(ConnectionString))
+        {
+            var insertedEntity = await conn.QuerySingleAsync<T>(sql, parameters);
+            return insertedEntity;
+        }
+    }
+
 
 
     public async Task<int> SingleUpDate(string sql, object parameters)

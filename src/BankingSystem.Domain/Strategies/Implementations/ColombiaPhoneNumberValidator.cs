@@ -1,8 +1,8 @@
 ﻿namespace BankingSystem.Domain.Strategies.Implementations;
 public class ColombiaPhoneNumberValidator : IPhoneNumberValidator
 {
-    public bool IsValid(string phoneNumber)
+    public bool IsValid(long phoneNumber)
     {
-        return phoneNumber.StartsWith("+57") && phoneNumber.Length == 13;
+        return phoneNumber.ToString().Length == 10;
     }
 }

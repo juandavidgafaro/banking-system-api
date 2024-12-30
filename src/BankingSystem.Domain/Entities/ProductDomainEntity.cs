@@ -14,6 +14,7 @@ public class ProductDomainEntity
     public DateTime ExpirationDate { get; set; }
     public DateTime DateLastModification { get; set; }
     public double MonthlyInterestPercentage { get; set; }
+    public int TermMonths { get; set; }
     public AccountDomainEntity Account { get; set; }
     public bool CanBeCanceled { get; private set; }
 
@@ -31,7 +32,6 @@ public class ProductDomainEntity
     }
 
     public ProductDomainEntity(
-        IProductRepository productRepository,
         ProductStatus status,
         string productType,
         int clientId,
@@ -42,8 +42,8 @@ public class ProductDomainEntity
         Status = status;
         Type = productType;
         Account = account;
+        ClientId = clientId;
         MonthlyInterestPercentage = monthlyInterestPercentage;
-        ValidateProductTypeByClientId(productRepository, productType, clientId, transactionType);
     }
 
     public bool isActiveProduct()

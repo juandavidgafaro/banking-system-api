@@ -5,17 +5,30 @@ public class LegalRepresentativeDomainEntity
 
     public int Id { get; set; }
     public string Name { get; set; }
-    public string IdentificationNumber { get; set; }
+    public long IdentificationNumber { get; set; }
     public string IdentificationType { get; set; }
-    public string Phone { get; set; }
+    public long Phone { get; set; }
+
+    public LegalRepresentativeDomainEntity(int id, 
+        string name,
+        long identificationNumber,
+        string identificationType, 
+        long phone)
+    {
+        Id = id;
+        Name = name;
+        IdentificationNumber = identificationNumber;
+        IdentificationType = identificationType;
+        Phone = phone;
+    }
 
     public LegalRepresentativeDomainEntity(
         IPhoneNumberValidatorStrategy phoneNumberValidatorStrategy,
         string country,
         string name,
-        string identificationNumber,
+        long identificationNumber,
         string identificationType,
-        string phone)
+        long phone)
     {
         Name = name;
         IdentificationNumber = identificationNumber;
@@ -24,7 +37,7 @@ public class LegalRepresentativeDomainEntity
         Phone = phone;
     }
 
-    private void PhoneNumberValidator(IPhoneNumberValidatorStrategy phoneNumberValidatorStrategy, string country, string phone)
+    private void PhoneNumberValidator(IPhoneNumberValidatorStrategy phoneNumberValidatorStrategy, string country, long phone)
     {
         if (!phoneNumberValidatorStrategy.Validate(country, phone))
         {

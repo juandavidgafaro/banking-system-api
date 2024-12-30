@@ -3,7 +3,7 @@ public class PersonType : Enumeration
 {
     private const string _STATUS_INVALID_ERROR_MESSAGE = "El tipo del cliente no es valido.";
 
-    public static PersonType Personal = new PersonType(0, "Persona");
+    public static PersonType Natural = new PersonType(0, "Natural");
     public static PersonType Business = new PersonType(1, "Empresarial");
 
     public PersonType(int id, string name) : base(id, name)
@@ -14,7 +14,7 @@ public class PersonType : Enumeration
     {
         return new[]
         {
-            Personal,
+            Natural,
             Business
         };
     }

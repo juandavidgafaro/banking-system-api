@@ -2,5 +2,5 @@
 
 public interface IClientRepository
 {
-    Task<bool> Create(ClientDomainEntity client);
+    Task<ClientDomainEntity> Create(ClientDomainEntity client);
 }

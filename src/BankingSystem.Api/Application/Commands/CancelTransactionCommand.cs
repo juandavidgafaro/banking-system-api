@@ -2,5 +2,5 @@
 public class CancelTransactionCommand : IRequest<Unit>
 {
     public int ProductId { get; set; }
-    public HeaderModel Header { get; set; }
+    public HeaderRequestModel Header { get; set; }
 }

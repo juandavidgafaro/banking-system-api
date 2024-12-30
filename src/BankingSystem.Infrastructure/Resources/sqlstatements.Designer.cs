@@ -61,14 +61,126 @@ namespace BankingSystem.Infrastructure.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a INSERT INTO Product (Type, 
+        ///   Busca una cadena traducida similar a SELECT 
+        ///    ClientId AS Id, 
+        ///    Name, 
+        ///    IdentificationNumber, 
+        ///    IdentificationType, 
+        ///    PersonType, 
+        ///    LegalRepresentativeId
+        ///FROM Client
+        ///WHERE ClientId = @ClientId;.
+        /// </summary>
+        internal static string get_client_by_id {
+            get {
+                return ResourceManager.GetString("get_client_by_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO Account 
+        ///(Number, 
+        ///Balance, 
+        ///OriginDate, 
+        ///CancellationDate, 
+        ///MaturityDate, 
+        ///DateLastModification) 
+        ///OUTPUT 
+        ///    INSERTED.AccountId AS Id, 
+        ///    INSERTED.Number, 
+        ///    INSERTED.Balance, 
+        ///    INSERTED.OriginDate,
+        ///    INSERTED.CancellationDate,
+        ///    INSERTED.MaturityDate,
+        ///    INSERTED.DateLastModification
+        ///VALUES 
+        ///(@Number, 
+        ///@Balance, 
+        ///GETDATE(), 
+        ///@CancellationDate, 
+        ///@MaturityDate,
+        ///GETDATE());
+        ///.
+        /// </summary>
+        internal static string insert_account {
+            get {
+                return ResourceManager.GetString("insert_account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO Client
+        ///(Name, 
+        ///IdentificationNumber, 
+        ///IdentificationType,
+        ///PersonType, 
+        ///LegalRepresentativeId)
+        ///OUTPUT 
+        ///    INSERTED.ClientId AS Id, 
+        ///    INSERTED.Name, 
+        ///    INSERTED.IdentificationNumber, 
+        ///    INSERTED.IdentificationType, 
+        ///    INSERTED.PersonType, 
+        ///    INSERTED.LegalRepresentativeId
+        ///VALUES 
+        ///(@Name,
+        ///@IdentificationNumber, 
+        ///@IdentificationType, 
+        ///@PersonType, 
+        ///@LegalRepresentativeId);
+        ///.
+        /// </summary>
+        internal static string insert_client {
+            get {
+                return ResourceManager.GetString("insert_client", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO LegalRepresentative 
+        ///(Name, 
+        ///IdentificationNumber, 
+        ///IdentificationType, 
+        ///Phone) 
+        ///OUTPUT 
+        ///    INSERTED.LegalRepresentativeId AS Id, 
+        ///    INSERTED.Name, 
+        ///    INSERTED.IdentificationNumber, 
+        ///    INSERTED.IdentificationType, 
+        ///    INSERTED.Phone
+        ///VALUES 
+        ///(@Name, 
+        ///@IdentificationNumber, 
+        ///@IdentificationType,
+        ///@Phone);
+        ///.
+        /// </summary>
+        internal static string insert_legal_representative {
+            get {
+                return ResourceManager.GetString("insert_legal_representative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a INSERT INTO Product 
+        ///(Type, 
         ///Status, 
         ///MonthlyInterestPercentage, 
         ///TermMonths, 
         ///DateLastModification, 
         ///ClientId, 
         ///AccountId)
-        ///VALUES (@ProductType, 
+        ///OUTPUT 
+        ///    INSERTED.ProductId AS Id, 
+        ///    INSERTED.Type, 
+        ///    INSERTED.Status, 
+        ///    INSERTED.MonthlyInterestPercentage, 
+        ///    INSERTED.TermMonths, 
+        ///    INSERTED.DateLastModification, 
+        ///    INSERTED.ClientId, 
+        ///    INSERTED.AccountId
+        ///VALUES 
+        ///(@ProductType, 
         ///@ProductStatus, 
         ///@MonthlyInterestPercentage, 
         ///@TermMonths,
@@ -84,8 +196,16 @@ namespace BankingSystem.Infrastructure.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a INSERT INTO [Transaction] (OriginDate, Type, Serial, ProductId)
-        ///VALUES (@OriginDate, @Type, @Serial, @ProductId);
+        ///   Busca una cadena traducida similar a INSERT INTO [Transaction] 
+        ///(OriginDate, 
+        ///Type, 
+        ///Serial, 
+        ///ProductId)
+        ///VALUES 
+        ///(@OriginDate, 
+        ///@Type, 
+        ///@Serial, 
+        ///@ProductId);
         ///.
         /// </summary>
         internal static string insert_transaction {

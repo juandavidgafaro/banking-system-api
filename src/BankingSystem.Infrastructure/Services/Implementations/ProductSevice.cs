@@ -15,10 +15,15 @@ public class ProductSevice : IProductSevice
         _accountRepository = accountRepository;
     }
 
-    public async Task Create(ProductDomainEntity product)
+    public async Task Create(ProductDomainEntity product, TransactionDomainEntity transaction)
     {
-        await _accountRepository.Create(product.Account);
-        await _productRepository.Create(product);
+        AccountDomainEntity accountCreated = await _accountRepository.Create(product.Account);
+        product.Account.Id = accountCreated.Id;
+
+        ProductDomainEntity productCreated = await _productRepository.Create(product);
+        transaction.ProductId = productCreated.Id;
+
+        await _transactionRepository.Create(transaction);
     }
 
     public async Task Cancel(int productId, TransactionDomainEntity transaction)

@@ -4,7 +4,7 @@ public class ProductEntity
     public int Id { get; set; }
     public string Type { get; set; }
     public string Status { get; set; }
-    public int AccountNumber { get; set; }
+    public long AccountNumber { get; set; }
     public double MonthlyInterestPercentage { get; set; }
     public int TermMonths { get; set; }
     public int AccountBalance { get; set; }

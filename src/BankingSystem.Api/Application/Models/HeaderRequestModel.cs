@@ -1,8 +1,10 @@
 ﻿namespace BankingSystem.Api.Application.Models;
 
-public record HeaderRequestModel
+public class HeaderRequestModel
 {
-    [FromHeader(Name = "source")]
-    public required string Source { get; set; }
+    [FromHeader(Name = "user")]
+    public string User { get; set; }
 
+    [FromHeader(Name = "source")]
+    public string Source { get; set; }
 }

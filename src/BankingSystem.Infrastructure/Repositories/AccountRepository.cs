@@ -1,14 +1,31 @@
 ﻿namespace BankingSystem.Infrastructure.Repositories;
 public class AccountRepository : SqlServerBase<AccountEntity>, IAccountRepository
 {
-    public AccountRepository(IOptions<InfraestructureSettings> settings)
+    public AccountRepository(IOptions<InfrastructureSettings> settings)
     : base(settings.Value.SqlServerSettings.ConnectionStrings.BankingSystemDataServer)
     {
     }
 
-    public Task Create(AccountDomainEntity accountDomainEntity)
+    public async Task<AccountDomainEntity> Create(AccountDomainEntity account)
     {
-        throw new NotImplementedException();
+        string sql = sqlstatements.insert_account;
+
+        try
+        {
+            AccountEntity insertionResult = await SingleInsert<AccountEntity>(sql, new
+            {
+                account.Number,
+                account.Balance,
+                account.CancellationDate,
+                account.MaturityDate,
+            });
+
+            return insertionResult;
+        }
+        catch (Exception ex) 
+        {
+            throw new Exception(ex.Message);
+        }        
     }
     public Task Cancel(DateTime cancellationDate)
     {

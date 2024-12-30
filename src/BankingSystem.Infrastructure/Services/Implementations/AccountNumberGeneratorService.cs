@@ -1,11 +1,11 @@
 ﻿namespace BankingSystem.Infrastructure.Services.Implementations;
 public class AccountNumberGeneratorService : IAccountNumberGeneratorService
 {
-    public int GenerateNumber()
+    public long GenerateNumber()
     {
         IRandomizerString randomizer = RandomizerFactory.GetRandomizer(new FieldOptionsTextRegex
         {
-            Pattern = @"\d{15}"
+            Pattern = @"\d{10}"
         });
 
         string? accountNumber = randomizer.Generate();
@@ -15,6 +15,6 @@ public class AccountNumberGeneratorService : IAccountNumberGeneratorService
             throw new ArgumentException();
         }
 
-        return int.Parse(accountNumber);
+        return long.Parse(accountNumber);
     }
 }

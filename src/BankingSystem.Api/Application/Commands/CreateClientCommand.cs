@@ -1,7 +1,7 @@
 ﻿namespace BankingSystem.Api.Application.Commands;
 
-public class CreateClientCommand : IRequest<Unit>
+public class CreateClientCommand : IRequest<int>
 {
-    public HeaderModel Header { get; set; }
+    public HeaderRequestModel Header { get; set; }
     public CreateClientDTO Body { get; set; }
 }

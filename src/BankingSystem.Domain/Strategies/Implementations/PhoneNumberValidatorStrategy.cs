@@ -11,7 +11,7 @@ public class PhoneNumberValidatorStrategy : IPhoneNumberValidatorStrategy
         };
     }
 
-    public bool Validate(string country, string phoneNumber)
+    public bool Validate(string country, long phoneNumber)
     {
         if (_validators.TryGetValue(country, out var validator))
         {

@@ -1,9 +1,7 @@
-﻿using BankingSystem.Infrastructure.Resources;
-
-namespace BankingSystem.Infrastructure.Repositories;
+﻿namespace BankingSystem.Infrastructure.Repositories;
 public class TransactionRepository : SqlServerBase<TransactionEntity>, ITransactionRepository
 {
-    public TransactionRepository(IOptions<InfraestructureSettings> settings)
+    public TransactionRepository(IOptions<InfrastructureSettings> settings)
     : base(settings.Value.SqlServerSettings.ConnectionStrings.BankingSystemDataServer)
     {
     }
@@ -12,13 +10,20 @@ public class TransactionRepository : SqlServerBase<TransactionEntity>, ITransact
     {
         string sql = sqlstatements.insert_transaction;
 
-
-        bool insertionResult = await SingleInsert(sql, new
+        try
         {
-            transaction.OriginDate,
-            Type = transaction.Type.Name,
-            transaction.Serial,
-            transaction.ProductId
-        });
+            bool insertionResult = await SingleInsert(sql, new
+            {
+                transaction.OriginDate,
+                Type = transaction.Type.Name,
+                transaction.Serial,
+                transaction.ProductId
+            });
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 }

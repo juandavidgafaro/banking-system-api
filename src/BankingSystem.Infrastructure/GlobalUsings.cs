@@ -14,3 +14,5 @@ global using RandomDataGenerator.FieldOptions;
 global using RandomDataGenerator.Randomizers;
 global using System.Data;
 global using System.Data.SqlClient;
+global using BankingSystem.Infrastructure.Resources;
+global using BankingSystem.Infrastructure.Services.Implementations;

@@ -19,4 +19,7 @@ global using Newtonsoft.Json;
 global using System.ComponentModel.DataAnnotations;
 global using System.Net;
 global using System.Reflection;
-
+global using Microsoft.AspNetCore.Mvc.ModelBinding;
+global using BankingSystem.Api.Application.Queries;
+global using BankingSystem.Domain.Sevices;
+global using BankingSystem.Infrastructure.Interfaces;

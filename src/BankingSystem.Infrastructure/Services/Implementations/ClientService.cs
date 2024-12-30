@@ -10,14 +10,18 @@ public class ClientService : IClientService
         _clientRepository = clientRepository;
     }
 
-    public async Task CreateBusinessClient(ClientDomainEntity client)
+    public async Task<ClientDomainEntity> CreateBusinessClient(ClientDomainEntity client)
     {
-        await _legalRepresentativeRepository.Create(client.LegalRepresentative);
-        await _clientRepository.Create(client);
+        LegalRepresentativeDomainEntity legalRepresentativeCreated = await _legalRepresentativeRepository.Create(client.LegalRepresentative);
+        client.LegalRepresentative = legalRepresentativeCreated;
+        ClientDomainEntity clientCreated = await _clientRepository.Create(client);
+
+        return clientCreated;
     }
 
-    public async Task CreatePersonalClient(ClientDomainEntity client)
+    public async Task<ClientDomainEntity> CreatePersonalClient(ClientDomainEntity client)
     {
-        await _clientRepository.Create(client);
+        ClientDomainEntity clientCreated = await _clientRepository.Create(client);
+        return clientCreated;
     }
 }

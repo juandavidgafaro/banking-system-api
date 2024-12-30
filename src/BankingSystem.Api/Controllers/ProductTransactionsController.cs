@@ -22,7 +22,7 @@ public class ProductTransactionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Guid>> Post(int productId, [FromHeaderModel] HeaderModel header, [FromBody] MakeDepositDTO makeDeposit)
+    public async Task<ActionResult<Guid>> Post(int productId, [FromHeaderModel] HeaderRequestModel header, [FromBody] MakeDepositDTO makeDeposit)
     {
         DepositTransactionCommand depositTransactionCommand = new DepositTransactionCommand()
         {
@@ -47,7 +47,7 @@ public class ProductTransactionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Post(int productId, [FromHeaderModel] HeaderModel header, [FromBody] MakeWithdrawDTO makeWithdraw)
+    public async Task<IActionResult> Post(int productId, [FromHeaderModel] HeaderRequestModel header, [FromBody] MakeWithdrawDTO makeWithdraw)
     {
         WithdrawTransactionCommand withdrawTransactionCommand = new WithdrawTransactionCommand()
         {

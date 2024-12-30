@@ -1,22 +1,34 @@
-﻿using BankingSystem.Infrastructure.Resources;
-
-namespace BankingSystem.Infrastructure.Repositories;
+﻿namespace BankingSystem.Infrastructure.Repositories;
 public class ProductRepository : SqlServerBase<ProductEntity>, IProductRepository
 {
-    public ProductRepository(IOptions<InfraestructureSettings> settings)
+    public ProductRepository(IOptions<InfrastructureSettings> settings)
     : base(settings.Value.SqlServerSettings.ConnectionStrings.BankingSystemDataServer)
     {
     }
 
-    public async Task Create(ProductDomainEntity product)
+    public async Task<ProductDomainEntity> Create(ProductDomainEntity product)
     {
         string sql = sqlstatements.insert_product;
 
-
-        bool insertionResult = await SingleInsert(sql, new
+        try
         {
-            
-        });
+            ProductEntity insertionResult = await SingleInsert<ProductEntity>(sql, new
+            {
+                ProductType = product.Type,
+                ProductStatus = product.Status.Name,
+                product.MonthlyInterestPercentage,
+                product.TermMonths,
+                product.ClientId,
+                AccountId = product.Account.Id
+            });
+
+            return insertionResult;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
     }
 
     public Task<ProductDomainEntity> GetSpecificTypeProductByClient(int clientId, string productType)

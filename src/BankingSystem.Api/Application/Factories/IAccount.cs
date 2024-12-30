@@ -1,6 +1,6 @@
 ﻿namespace BankingSystem.Api.Application.Factories;
 public interface IAccount
 {
-    int GetNumber();
+    long GetNumber();
     double GetBalance();
 }

@@ -3,39 +3,50 @@ public class ClientDomainEntity
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public string IdentificationNumber { get; set; }
+    public int IdentificationNumber { get; set; }
     public string IdentificationType { get; set; }
     public string PersonType { get; set; }
-    public LegalRepresentativeDomainEntity LegalRepresentative { get; set; }
-    public ProductDomainEntity Product { get; set; }
+    public LegalRepresentativeDomainEntity? LegalRepresentative { get; set; }
 
     public ClientDomainEntity(
+        int id,
         string name,
-        string identificationNumber,
+        int identificationNumber,
         string identificationType,
-        string personType,
-        ProductDomainEntity product)
+        string personType)
+    {
+        Id = id;
+        Name = name;
+        IdentificationNumber = identificationNumber;
+        IdentificationType = identificationType;
+        PersonType = personType;
+    }
+    public ClientDomainEntity(
+
+        string name,
+        int identificationNumber,
+        string identificationType,
+        string personType)
     {
         Name = name;
         IdentificationNumber = identificationNumber;
         IdentificationType = identificationType;
         PersonType = personType;
-        Product = product;
     }
 
     public ClientDomainEntity(
+        int id,
         string name,
-        string identificationNumber,
+        int identificationNumber,
         string identificationType,
         string personType,
-        LegalRepresentativeDomainEntity legalRepresentative,
-        ProductDomainEntity product)
+        LegalRepresentativeDomainEntity legalRepresentative)
     {
+        Id = id;
         Name = name;
         IdentificationNumber = identificationNumber;
         IdentificationType = identificationType;
         PersonType = personType;
         LegalRepresentative = legalRepresentative;
-        Product = product;
     }
 }

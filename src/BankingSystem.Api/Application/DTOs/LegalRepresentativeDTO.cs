@@ -2,7 +2,7 @@
 public class LegalRepresentativeDTO
 {
     public string Name { get; set; }
-    public string IdentificationNumber { get; set; }
+    public long IdentificationNumber { get; set; }
     public string IdentificationType { get; set; }
-    public string Phone { get; set; }
+    public long Phone { get; set; }
 }
