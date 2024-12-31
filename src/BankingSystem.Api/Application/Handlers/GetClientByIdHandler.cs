@@ -2,9 +2,9 @@
 
 public class GetClientByIdHandler : IRequestHandler<GetClientByIdQuery, ClientQueryResponseDTO>
 {
-    private readonly IClientInfrastructureRepository _ClientInfrastructureRepository;
+    private readonly IClientRepository _ClientInfrastructureRepository;
 
-    public GetClientByIdHandler(IClientInfrastructureRepository clientInfrastructureRepository)
+    public GetClientByIdHandler(IClientRepository clientInfrastructureRepository)
     {
         _ClientInfrastructureRepository = clientInfrastructureRepository;
     }

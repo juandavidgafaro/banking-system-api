@@ -1,5 +1,5 @@
 ﻿namespace BankingSystem.Infrastructure.Interfaces;
-public interface IClientInfrastructureRepository
+public interface IClientRepository : IClient
 {
     Task<ClientEntity> GetClientById(int id);
 }

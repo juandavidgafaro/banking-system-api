@@ -1,13 +1,15 @@
-﻿namespace BankingSystem.Infrastructure.Services.Implementations;
+﻿using BankingSystem.Infrastructure.Interfaces;
+
+namespace BankingSystem.Infrastructure.Services.Implementations;
 public class ProductSevice : IProductSevice
 {
-    private readonly IProductRepository _productRepository;
+    private readonly IProduct _productRepository;
     private readonly IAccountRepository _accountRepository;
-    private readonly ITransactionRepository _transactionRepository;
+    private readonly ITransaction _transactionRepository;
 
     public ProductSevice(
-        IProductRepository productRepository,
-        ITransactionRepository transactionRepository,
+        IProduct productRepository,
+        ITransaction transactionRepository,
         IAccountRepository accountRepository)
     {
         _productRepository = productRepository;
@@ -15,7 +17,7 @@ public class ProductSevice : IProductSevice
         _accountRepository = accountRepository;
     }
 
-    public async Task Create(ProductDomainEntity product, TransactionDomainEntity transaction)
+    public async Task<int> Create(ProductDomainEntity product, TransactionDomainEntity transaction)
     {
         AccountDomainEntity accountCreated = await _accountRepository.Create(product.Account);
         product.Account.Id = accountCreated.Id;
@@ -24,6 +26,8 @@ public class ProductSevice : IProductSevice
         transaction.ProductId = productCreated.Id;
 
         await _transactionRepository.Create(transaction);
+
+        return productCreated.Id;
     }
 
     public async Task Cancel(int productId, TransactionDomainEntity transaction)

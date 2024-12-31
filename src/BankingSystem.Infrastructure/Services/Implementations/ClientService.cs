@@ -1,10 +1,10 @@
 ﻿namespace BankingSystem.Infrastructure.Services.Implementations;
 public class ClientService : IClientService
 {
-    private readonly ILegalRepresentativeRepository _legalRepresentativeRepository;
-    private readonly IClientRepository _clientRepository;
+    private readonly ILegalRepresentative _legalRepresentativeRepository;
+    private readonly IClient _clientRepository;
 
-    public ClientService(ILegalRepresentativeRepository legalRepresentativeRepository, IClientRepository clientRepository)
+    public ClientService(ILegalRepresentative legalRepresentativeRepository, IClient clientRepository)
     {
         _legalRepresentativeRepository = legalRepresentativeRepository;
         _clientRepository = clientRepository;

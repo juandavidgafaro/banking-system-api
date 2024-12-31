@@ -1,5 +1,5 @@
 ﻿namespace BankingSystem.Domain.Interfaces;
-public interface IProductRepository
+public interface IProduct
 {
     Task<ProductDomainEntity> Create(ProductDomainEntity product);
     Task<List<ProductDomainEntity>> GetSpecificTypeProductsByClient(int clientId, string productType);

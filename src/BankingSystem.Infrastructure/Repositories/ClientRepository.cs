@@ -1,7 +1,7 @@
 ﻿using BankingSystem.Infrastructure.Interfaces;
 
 namespace BankingSystem.Infrastructure.Repositories;
-public class ClientRepository : SqlServerBase<ClientEntity>, IClientRepository, IClientInfrastructureRepository
+public class ClientRepository : SqlServerBase<ClientEntity>, IClientRepository
 {
     public ClientRepository(IOptions<InfrastructureSettings> settings)
     : base(settings.Value.SqlServerSettings.ConnectionStrings.BankingSystemDataServer)

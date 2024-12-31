@@ -1,6 +1,6 @@
 ﻿namespace BankingSystem.Api.Application.Commands;
-public class CancelTransactionCommand : IRequest<Guid>
+public class CreateProductCommand : IRequest<int>
 {
-    public int ProductId { get; set; }
     public HeaderRequestModel Header { get; set; }
+    public CreateProductDTO Body { get; set; }
 }

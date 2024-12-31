@@ -1,4 +1,6 @@
-﻿namespace BankingSystem.Infrastructure.Repositories;
+﻿using BankingSystem.Infrastructure.Interfaces;
+
+namespace BankingSystem.Infrastructure.Repositories;
 public class AccountRepository : SqlServerBase<AccountEntity>, IAccountRepository
 {
     public AccountRepository(IOptions<InfrastructureSettings> settings)

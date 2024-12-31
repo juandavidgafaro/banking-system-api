@@ -8,7 +8,7 @@ public class BankingProductFactoryProvider : IBankingProductFactoryProvider
             1 => new SavingsAccountFactory(),
             2 => new CheckingAccountFactory(),
             3 => new CDTFactory(),
-            _ => throw new ArgumentException($"El tipo de cuenta: {productType} no es valida.")
+            _ => throw new ArgumentException($"El tipo de producto: {productType} no es valido.")
         };
     }
 }

@@ -23,3 +23,5 @@ global using Microsoft.AspNetCore.Mvc.ModelBinding;
 global using BankingSystem.Api.Application.Queries;
 global using BankingSystem.Domain.Sevices;
 global using BankingSystem.Infrastructure.Interfaces;
+global using BankingSystem.Infrastructure.Entities;
+global using BankingSystem.Api.Application.Services.Implementations;

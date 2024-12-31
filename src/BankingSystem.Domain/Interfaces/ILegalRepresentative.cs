@@ -1,5 +1,5 @@
 ﻿namespace BankingSystem.Domain.Interfaces;
-public interface ILegalRepresentativeRepository
+public interface ILegalRepresentative
 {
     Task<LegalRepresentativeDomainEntity> Create(LegalRepresentativeDomainEntity legalRepresentative);
 }

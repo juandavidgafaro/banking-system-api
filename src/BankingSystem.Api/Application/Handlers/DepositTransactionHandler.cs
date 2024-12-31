@@ -1,15 +1,13 @@
-﻿using BankingSystem.Domain.Sevices;
-
-namespace BankingSystem.Api.Application.Handlers;
+﻿namespace BankingSystem.Api.Application.Handlers;
 public class DepositTransactionHandler : IRequestHandler<DepositTransactionCommand, Guid>
 {
     private readonly TransactionType _TRANSACTION_TYPE = TransactionType.Deposit;
 
-    private readonly IProductRepository _productRepository;
+    private readonly IProduct _productRepository;
     private readonly ITransactionService _transactionService;
 
     public DepositTransactionHandler(
-        IProductRepository productRepository,
+        IProduct productRepository,
         ITransactionService transactionService)
     {
         _productRepository = productRepository;

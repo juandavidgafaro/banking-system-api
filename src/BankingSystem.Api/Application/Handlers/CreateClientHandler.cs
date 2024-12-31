@@ -6,16 +6,18 @@ public class CreateClientHandler : IRequestHandler<CreateClientCommand, int>
     private readonly IAccountNumberGeneratorService _accountNumberGeneratorService;
     private readonly IPhoneNumberValidatorStrategy _phoneNumberValidatorStrategy;
     private readonly IProductSevice _productSevice;
-    private readonly IProductRepository _productRepository;
+    private readonly IClientRepository _productRepository;
     private readonly IClientService _clientService;
+    private readonly IBuildAccountService _buildAccountService;
 
     public CreateClientHandler(
         IBankingProductFactoryProvider bankingProductFactoryProvider,
         IAccountNumberGeneratorService accountNumberGeneratorService,
         IPhoneNumberValidatorStrategy phoneNumberValidatorStrategy,
-        IProductRepository productRepository,
+        IClientRepository productRepository,
         IClientService clientService,
-        IProductSevice productSevice)
+        IProductSevice productSevice,
+        IBuildAccountService buildAccountService)
     {
         _bankingProductFactoryProvider = bankingProductFactoryProvider;
         _accountNumberGeneratorService = accountNumberGeneratorService;
@@ -23,33 +25,12 @@ public class CreateClientHandler : IRequestHandler<CreateClientCommand, int>
         _productRepository = productRepository;
         _clientService = clientService;
         _productSevice = productSevice;
+        _buildAccountService = buildAccountService;
     }
 
     public async Task<int> Handle(CreateClientCommand request, CancellationToken cancellationToken)
     {
-        IBankingProductFactory productFartory = _bankingProductFactoryProvider.GetFactory(request.Body.Client.Product.Type);
-
-        IAccount accounDetails;
-        AccountDomainEntity account;
-
-        if (ProductType.FromName(request.Body.Client.Product.Type) == ProductType.CertificateOfDeposit)
-        {
-            accounDetails = productFartory.CreateAccount(_accountNumberGeneratorService, request.Body.Client.Product.MoneyForAccount);
-
-            account = new(
-                accounDetails.GetNumber(),
-                accounDetails.GetBalance(),
-                DateTime.Now.AddMonths(request.Body.Client.Product.TermMonths)
-            );
-        }
-        else
-        {
-            accounDetails = productFartory.CreateAccount(_accountNumberGeneratorService);
-            account = new(
-                accounDetails.GetNumber(),
-                accounDetails.GetBalance()
-            );
-        }
+        AccountDomainEntity account = _buildAccountService.BuildByProductType(request.Body.Client.Product.Type, (request.Body.Client.Product.MoneyForAccount, request.Body.Client.Product.TermMonths));
 
         ProductDomainEntity product;
         ClientDomainEntity clientCreated;
@@ -60,6 +41,10 @@ public class CreateClientHandler : IRequestHandler<CreateClientCommand, int>
             request.Body.Client.IdentificationType,
             request.Body.Client.PersonType
         );
+
+        double monthlyInterestPercentage = request.Body.Client.Product.MonthlyInterestPercentage > 0 ?
+            request.Body.Client.Product.MonthlyInterestPercentage
+            : ProductTypeInterestRateService.GenerateInterestPercentage(ProductType.FromName(request.Body.Client.Product.Type));
 
         if (PersonType.Business.Name == request.Body.Client.PersonType)
         {
@@ -74,45 +59,28 @@ public class CreateClientHandler : IRequestHandler<CreateClientCommand, int>
             client.LegalRepresentative = legalRepresentative;
 
             clientCreated = await _clientService.CreateBusinessClient(client);
-
-            product = new(
-            ProductStatus.Active,
-            request.Body.Client.Product.Type,
-            clientCreated.Id,
-            ProductTypeInterestRateService.GenerateInterestPercentage(ProductType.FromName(request.Body.Client.Product.Type)),
-            account,
-            _TRANSACTION_TYPE);
-
-            TransactionDomainEntity transaction = new()
-            {
-                OriginDate = DateTime.Now,
-                Type = TransactionType.Create,
-                Serial = Guid.NewGuid()
-            };
-
-            await _productSevice.Create(product, transaction);
         }
         else
         {
             clientCreated = await _clientService.CreatePersonalClient(client);
+        }
 
-            product = new(
+        product = new(
             ProductStatus.Active,
             request.Body.Client.Product.Type,
             clientCreated.Id,
-            ProductTypeInterestRateService.GenerateInterestPercentage(ProductType.FromName(request.Body.Client.Product.Type)),
+            monthlyInterestPercentage,
             account,
             _TRANSACTION_TYPE);
 
-            TransactionDomainEntity transaction = new()
-            {
-                OriginDate = DateTime.Now,
-                Type = TransactionType.Create,
-                Serial = Guid.NewGuid()
-            };
+        TransactionDomainEntity transaction = new()
+        {
+            OriginDate = DateTime.Now,
+            Type = TransactionType.Create,
+            Serial = Guid.NewGuid()
+        };
 
-            await _productSevice.Create(product, transaction);
-        }
+        await _productSevice.Create(product, transaction);
 
         return clientCreated.Id;
     }

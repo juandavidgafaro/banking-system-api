@@ -19,12 +19,12 @@ public class ClientController : ControllerBase
     /// </summary>
     /// <param name="header"></param>
     /// <param name="createClientDTO"></param>
-    /// <returns></returns>
+    /// <returns>Retorna el Id del cliente creado.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Post([FromHeaderModel] HeaderRequestModel header, [FromBody] CreateClientDTO createClientDTO)
+    public async Task<ActionResult<int>> Post([FromHeaderModel] HeaderRequestModel header, [FromBody] CreateClientDTO createClientDTO)
     {
         CreateClientCommand createClientCommand = new()
         {
@@ -34,19 +34,19 @@ public class ClientController : ControllerBase
 
         int clientId = await _mediator.Send(createClientCommand);
 
-        return Ok(new { clientId = clientId });
+        return Ok(clientId);
     }
 
     /// <summary>
     /// Retorna un cliente por su Id.
     /// </summary>
     /// <param name="clientId"></param>
-    /// <returns></returns>
+    /// <returns>Retorna la información del cliente.</returns>
     [HttpGet("{clientId}")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetClientById(int clientId)
+    public async Task<ActionResult<ClientQueryResponseDTO>> GetClientById(int clientId)
     {
         GetClientByIdQuery query = new GetClientByIdQuery(clientId);
 

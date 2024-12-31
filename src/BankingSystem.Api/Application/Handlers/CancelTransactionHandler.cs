@@ -1,15 +1,15 @@
 ﻿namespace BankingSystem.Api.Application.Handlers;
-public class CancelTransactionHandler : IRequestHandler<CancelTransactionCommand, Unit>
+public class CancelTransactionHandler : IRequestHandler<CancelTransactionCommand, Guid>
 {
     private readonly TransactionType _TRANSACTION_TYPE = TransactionType.Cancel;
 
-    private readonly IProductRepository _productRepository;
-    private readonly ITransactionRepository _transactionRepository;
+    private readonly IProduct _productRepository;
+    private readonly ITransaction _transactionRepository;
     private readonly IProductSevice _productSevice;
 
     public CancelTransactionHandler(
-        IProductRepository productRepository,
-        ITransactionRepository transactionRepository,
+        IProduct productRepository,
+        ITransaction transactionRepository,
         IProductSevice productSevice)
     {
         _productRepository = productRepository;
@@ -17,8 +17,10 @@ public class CancelTransactionHandler : IRequestHandler<CancelTransactionCommand
         _productSevice = productSevice;
     }
 
-    public async Task<Unit> Handle(CancelTransactionCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CancelTransactionCommand request, CancellationToken cancellationToken)
     {
+        Guid transactionSerial = Guid.NewGuid();
+
         ProductDomainEntity product = await _productRepository.GetProductById(request.ProductId);
 
         if (product == default)
@@ -49,6 +51,6 @@ public class CancelTransactionHandler : IRequestHandler<CancelTransactionCommand
 
         await _productSevice.Cancel(productIdToCancel, cancellationTransaction);
 
-        return Unit.Value;
+        return transactionSerial;
     }
 }

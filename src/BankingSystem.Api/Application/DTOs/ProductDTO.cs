@@ -2,7 +2,12 @@
 
 public class ProductDTO
 {
-    public string Type { get; set; }
-    public double MoneyForAccount { get; set; }
+    public int? Id { get; set; }
+    public required string Type { get; set; }
+    public string? Status { get; set; }
     public int TermMonths { get; set; }
+    public double MoneyForAccount { get; set; }
+    public double MonthlyInterestPercentage { get; set; }
+    public ClientDomainEntity Client { get; set; }
+    public AccountDomainEntity? Account { get; set; }
 }

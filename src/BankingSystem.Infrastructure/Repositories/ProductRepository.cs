@@ -1,5 +1,5 @@
 ﻿namespace BankingSystem.Infrastructure.Repositories;
-public class ProductRepository : SqlServerBase<ProductEntity>, IProductRepository
+public class ProductRepository : SqlServerBase<ProductEntity>, IProduct
 {
     public ProductRepository(IOptions<InfrastructureSettings> settings)
     : base(settings.Value.SqlServerSettings.ConnectionStrings.BankingSystemDataServer)

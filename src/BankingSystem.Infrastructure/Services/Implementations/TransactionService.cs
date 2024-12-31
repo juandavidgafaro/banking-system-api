@@ -1,10 +1,10 @@
 ﻿namespace BankingSystem.Infrastructure.Services.Implementations;
 public class TransactionService : ITransactionService
 {
-    private readonly IAccountRepository _accountRepository;
-    private readonly ITransactionRepository _transactionRepository;
+    private readonly IAccount _accountRepository;
+    private readonly ITransaction _transactionRepository;
 
-    public TransactionService(IAccountRepository accountRepository, ITransactionRepository transactionRepository)
+    public TransactionService(IAccount accountRepository, ITransaction transactionRepository)
     {
         _accountRepository = accountRepository;
         _transactionRepository = transactionRepository;

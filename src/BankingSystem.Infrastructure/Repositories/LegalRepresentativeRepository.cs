@@ -1,5 +1,5 @@
 ﻿namespace BankingSystem.Infrastructure.Repositories;
-public class LegalRepresentativeRepository : SqlServerBase<LegalRepresentativeEntity>, ILegalRepresentativeRepository
+public class LegalRepresentativeRepository : SqlServerBase<LegalRepresentativeEntity>, ILegalRepresentative
 {
     public LegalRepresentativeRepository(IOptions<InfrastructureSettings> settings)
     : base(settings.Value.SqlServerSettings.ConnectionStrings.BankingSystemDataServer)

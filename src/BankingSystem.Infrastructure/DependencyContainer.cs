@@ -7,12 +7,12 @@ public static class DependencyContainer
     {
         services.Configure<InfrastructureSettings>(configuration);
 
+        services.AddTransient<IClient, ClientRepository>();
         services.AddTransient<IClientRepository, ClientRepository>();
-        services.AddTransient<IClientInfrastructureRepository, ClientRepository>();
-        services.AddTransient<IProductRepository, ProductRepository>();
-        services.AddTransient<IAccountRepository, AccountRepository>();
-        services.AddTransient<ILegalRepresentativeRepository, LegalRepresentativeRepository>();
-        services.AddTransient<ITransactionRepository, TransactionRepository>();
+        services.AddTransient<IProduct, ProductRepository>();
+        services.AddTransient<IAccount, AccountRepository>();
+        services.AddTransient<ILegalRepresentative, LegalRepresentativeRepository>();
+        services.AddTransient<ITransaction, TransactionRepository>();
 
         services.AddTransient<IAccountNumberGeneratorService, AccountNumberGeneratorService>();
         services.AddTransient<IClientService, ClientService>();

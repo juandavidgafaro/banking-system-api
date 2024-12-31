@@ -1,5 +1,5 @@
 ﻿namespace BankingSystem.Infrastructure.Repositories;
-public class TransactionRepository : SqlServerBase<TransactionEntity>, ITransactionRepository
+public class TransactionRepository : SqlServerBase<TransactionEntity>, ITransaction
 {
     public TransactionRepository(IOptions<InfrastructureSettings> settings)
     : base(settings.Value.SqlServerSettings.ConnectionStrings.BankingSystemDataServer)

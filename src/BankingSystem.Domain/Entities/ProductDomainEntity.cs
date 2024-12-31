@@ -8,6 +8,7 @@ public class ProductDomainEntity
 
     public int Id { get; set; }
     public int ClientId { get; set; }
+    public ClientDomainEntity? Client { get; set; }
     public string Type { get; set; }
     public ProductStatus Status { get; set; }
     public DateTime OriginDate { get; set; }
@@ -46,6 +47,24 @@ public class ProductDomainEntity
         MonthlyInterestPercentage = monthlyInterestPercentage;
     }
 
+    public ProductDomainEntity(
+        IProduct productRepository,
+        ProductStatus status,
+        string productType,
+        int clientId,
+        double monthlyInterestPercentage,
+        AccountDomainEntity account,
+        TransactionType transactionType)
+    {
+        ValidateProductTypeByClientId(productRepository, productType, clientId, transactionType);
+
+        Status = status;
+        Type = productType;
+        Account = account;
+        ClientId = clientId;
+        MonthlyInterestPercentage = monthlyInterestPercentage;
+    }
+
     public bool isActiveProduct()
     {
         return Status.Id == _ACTIVE_STATUS;
@@ -63,7 +82,7 @@ public class ProductDomainEntity
         }
     }
 
-    public int ActionsForCancellationProcess(IProductRepository productRepository, string productType, int clientId)
+    public int ActionsForCancellationProcess(IProduct productRepository, string productType, int clientId)
     {
         int productIdToCancel = 0;
 
@@ -76,7 +95,7 @@ public class ProductDomainEntity
         return productIdToCancel;
     }
 
-    private int ValidateProductTypeByClientId(IProductRepository productRepository, string productType, int clientId, TransactionType transactionType)
+    private int ValidateProductTypeByClientId(IProduct productRepository, string productType, int clientId, TransactionType transactionType)
     {
         ProductDomainEntity product = productRepository.GetSpecificTypeProductByClient(clientId, productType).GetAwaiter().GetResult();
 

@@ -1,5 +1,5 @@
 ﻿namespace BankingSystem.Domain.Interfaces;
-public interface ITransactionRepository
+public interface ITransaction
 {
     Task Create(TransactionDomainEntity transaction);
 }

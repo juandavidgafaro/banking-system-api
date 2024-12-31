@@ -1,6 +1,6 @@
 ﻿namespace BankingSystem.Domain.Interfaces;
 
-public interface IClientRepository
+public interface IClient
 {
     Task<ClientDomainEntity> Create(ClientDomainEntity client);
 }
