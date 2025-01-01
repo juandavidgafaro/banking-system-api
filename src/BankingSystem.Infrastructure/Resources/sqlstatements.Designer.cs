@@ -61,6 +61,55 @@ namespace BankingSystem.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE Account
+        ///SET 
+        ///CancellationDate = GETDATE()
+        ///WHERE AccountId = @AccountId;.
+        /// </summary>
+        internal static string cancel_account {
+            get {
+                return ResourceManager.GetString("cancel_account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE Product
+        ///SET 
+        ///DateLastModification = GETDATE(),
+        ///Status = @Status
+        ///WHERE ProductId = @ProductId;.
+        /// </summary>
+        internal static string cancel_product {
+            get {
+                return ResourceManager.GetString("cancel_product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT 
+        ///P.ProductId AS Id,
+        ///P.Type AS Type,
+        ///P.Status AS Status,
+        ///A.Number AS AccountNumber,
+        ///P.MonthlyInterestPercentage AS MonthlyInterestPercentage,
+        ///P.TermMonths AS TermMonths,
+        ///A.Balance AS AccountBalance,
+        ///P.ClientId AS ClientId,
+        ///P.AccountId AS AccountId
+        ///FROM 
+        ///Product P
+        ///JOIN 
+        ///Account A ON P.AccountId = A.AccountId
+        ///WHERE 
+        ///P.Type = @ProductType;.
+        /// </summary>
+        internal static string get_all_products_by_type {
+            get {
+                return ResourceManager.GetString("get_all_products_by_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SELECT 
         ///    ClientId AS Id, 
         ///    Name, 
@@ -74,6 +123,54 @@ namespace BankingSystem.Infrastructure.Resources {
         internal static string get_client_by_id {
             get {
                 return ResourceManager.GetString("get_client_by_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT 
+        ///P.ProductId AS Id,
+        ///P.Type AS Type,
+        ///P.Status AS Status,
+        ///A.Number AS AccountNumber,
+        ///P.MonthlyInterestPercentage AS MonthlyInterestPercentage,
+        ///P.TermMonths AS TermMonths,
+        ///A.Balance AS AccountBalance,
+        ///P.ClientId AS ClientId,
+        ///P.AccountId AS AccountId
+        ///FROM 
+        ///Product P
+        ///JOIN 
+        ///Account A ON P.AccountId = A.AccountId
+        ///WHERE 
+        ///P.Type = @ProductType AND P.ClientId = @ClientId;.
+        /// </summary>
+        internal static string get_product_by_client_and_type {
+            get {
+                return ResourceManager.GetString("get_product_by_client_and_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SELECT 
+        ///P.ProductId AS Id,
+        ///P.Type AS Type,
+        ///P.Status AS Status,
+        ///A.Number AS AccountNumber,
+        ///P.MonthlyInterestPercentage AS MonthlyInterestPercentage,
+        ///P.TermMonths AS TermMonths,
+        ///A.Balance AS AccountBalance,
+        ///P.ClientId AS ClientId,
+        ///P.AccountId AS AccountId
+        ///FROM 
+        ///Product P
+        ///JOIN 
+        ///Account A ON P.AccountId = A.AccountId
+        ///WHERE 
+        ///P.ProductId = @ProductId;.
+        /// </summary>
+        internal static string get_product_by_id {
+            get {
+                return ResourceManager.GetString("get_product_by_id", resourceCulture);
             }
         }
         
@@ -211,6 +308,18 @@ namespace BankingSystem.Infrastructure.Resources {
         internal static string insert_transaction {
             get {
                 return ResourceManager.GetString("insert_transaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a UPDATE Account
+        ///SET 
+        ///Balance = @CurrentBalance
+        ///WHERE AccountId = @AccountId;.
+        /// </summary>
+        internal static string modify_account_balance {
+            get {
+                return ResourceManager.GetString("modify_account_balance", resourceCulture);
             }
         }
     }

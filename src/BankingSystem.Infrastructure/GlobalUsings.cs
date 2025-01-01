@@ -16,3 +16,5 @@ global using System.Data;
 global using System.Data.SqlClient;
 global using BankingSystem.Infrastructure.Resources;
 global using BankingSystem.Infrastructure.Services.Implementations;
+global using BankingSystem.Infrastructure.Interfaces;
+global using BankingSystem.Infrastructure.Exceptions;

@@ -10,15 +10,15 @@ public class TransactionService : ITransactionService
         _transactionRepository = transactionRepository;
     }
 
-    public async Task MakeDeposit(TransactionDomainEntity transaction, double currentBalance)
+    public async Task MakeDeposit(TransactionDomainEntity transaction, AccountDomainEntity account, double currentBalance)
     {
-        await _accountRepository.ModifyBalance(currentBalance);
+        await _accountRepository.ModifyBalance(account, currentBalance);
         await _transactionRepository.Create(transaction);
     }
 
-    public async Task MakeWithdrawal(TransactionDomainEntity transaction, double currentBalance)
+    public async Task MakeWithdrawal(TransactionDomainEntity transaction, AccountDomainEntity account, double currentBalance)
     {
-        await _accountRepository.ModifyBalance(currentBalance);
+        await _accountRepository.ModifyBalance(account, currentBalance);
         await _transactionRepository.Create(transaction);
     }
 }

@@ -2,6 +2,6 @@
 public interface IAccount
 {
     Task<AccountDomainEntity> Create(AccountDomainEntity account);
-    Task ModifyBalance(double currentBalance);
-    Task Cancel(DateTime cancellationDate);
+    Task ModifyBalance(AccountDomainEntity account, double currentBalance);
+    Task Cancel(AccountDomainEntity account);
 }

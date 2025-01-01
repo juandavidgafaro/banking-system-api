@@ -6,7 +6,7 @@ public static class DepositValidationService
 
     public static void ValidateAmountToDeposit(double depositAmount)
     {
-        if (_AMOUNT_DEFAULT > depositAmount)
+        if (_AMOUNT_DEFAULT >= depositAmount)
         {
             throw new DomainException(_INSUFFICIENT_AMOUNT_MESSAGE);
         }

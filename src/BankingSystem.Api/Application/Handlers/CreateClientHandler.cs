@@ -44,7 +44,7 @@ public class CreateClientHandler : IRequestHandler<CreateClientCommand, int>
 
         double monthlyInterestPercentage = request.Body.Client.Product.MonthlyInterestPercentage > 0 ?
             request.Body.Client.Product.MonthlyInterestPercentage
-            : ProductTypeInterestRateService.GenerateInterestPercentage(ProductType.FromName(request.Body.Client.Product.Type));
+            : ProductInterestService.GenerateInterestPercentage(ProductType.FromName(request.Body.Client.Product.Type));
 
         if (PersonType.Business.Name == request.Body.Client.PersonType)
         {
@@ -67,7 +67,7 @@ public class CreateClientHandler : IRequestHandler<CreateClientCommand, int>
 
         product = new(
             ProductStatus.Active,
-            request.Body.Client.Product.Type,
+            ProductType.FromName(request.Body.Client.Product.Type),
             clientCreated.Id,
             monthlyInterestPercentage,
             account,

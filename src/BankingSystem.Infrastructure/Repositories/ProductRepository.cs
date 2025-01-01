@@ -1,5 +1,5 @@
 ﻿namespace BankingSystem.Infrastructure.Repositories;
-public class ProductRepository : SqlServerBase<ProductEntity>, IProduct
+public class ProductRepository : SqlServerBase<ProductEntity>, IProductRepository
 {
     public ProductRepository(IOptions<InfrastructureSettings> settings)
     : base(settings.Value.SqlServerSettings.ConnectionStrings.BankingSystemDataServer)
@@ -28,37 +28,67 @@ public class ProductRepository : SqlServerBase<ProductEntity>, IProduct
         {
             throw new Exception(ex.Message);
         }
-
     }
 
-    public Task<ProductDomainEntity> GetSpecificTypeProductByClient(int clientId, string productType)
+    public async Task<IEnumerable<ProductEntity>> GetAllProductsByType(string type)
     {
-        throw new NotImplementedException();
-    }
+        string sql = sqlstatements.get_all_products_by_type;
 
-    public async Task<List<ProductDomainEntity>> GetSpecificTypeProductsByClient(int clientId, string productType)
-    {
-        string sql = "";
-
-        bool insertionResult = await SingleInsert(sql, new
+        try
         {
+            IEnumerable<ProductEntity> products = await ExecuteResult<ProductEntity>(sql, new { ProductType = type });
 
-        });
+            return products;
+        }
+        catch (Exception ex)
+        {
+            throw new InfrastructureException($"Error al intentar obtener los productos por el tipo: {type}, detalle:{ex.Message}");
+        }
+    }
 
-        return new List<ProductDomainEntity>();
+    public async Task<ProductDomainEntity> GetSpecificTypeProductByClient(int clientId, string productType)
+    {
+        string sql = sqlstatements.get_product_by_client_and_type;
+
+        try
+        {
+            ProductEntity product = await ExecuteSingleAsync(sql, new { ProductType = productType, ClientId = clientId });
+
+            return product;
+        }
+        catch (Exception ex)
+        {
+            throw new InfrastructureException($"Error al intentar obtener el producto por el tipo: {productType} con el id de cliente: {clientId}, detalle:{ex.Message}");
+        }
     }
 
     public async Task<ProductDomainEntity> GetProductById(int id)
     {
-        string sql = "";
+        string sql = sqlstatements.get_product_by_id;
 
-        ProductEntity product = await ExecuteSingleQueryAsync(sql, new { id });
+        try
+        {
+            ProductEntity product = await ExecuteSingleQueryAsync(sql, new { ProductId = id });
 
-        return product;
+            return product;
+        }
+        catch (Exception ex)
+        {
+            throw new InfrastructureException($"Error al intentar obtener el producto con el id: {id}, detalle:{ex.Message}");
+        }
     }
 
-    public Task CancelProductById(int id)
+    public async Task CancelProductById(int id)
     {
-        throw new NotImplementedException();
+        string sql = sqlstatements.cancel_product;
+
+        try
+        {
+            await SingleUpdate(sql, new { ProductId = id, Status = ProductStatus.Canceled.Name });
+        }
+        catch (Exception ex)
+        {
+            throw new InfrastructureException($"Error al intentar cancelar el producto con el id: {id}, detalle:{ex.Message}");
+        }
     }
 }

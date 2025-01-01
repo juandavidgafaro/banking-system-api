@@ -3,11 +3,11 @@ public class WithdrawTransactionHandler : IRequestHandler<WithdrawTransactionCom
 {
     private readonly TransactionType _TRANSACTION_TYPE = TransactionType.Withdraw;
 
-    private readonly IProduct _productRepository;
+    private readonly IProductRepository _productRepository;
     private readonly ITransactionService _transactionService;
 
     public WithdrawTransactionHandler(
-        IProduct productRepository,
+        IProductRepository productRepository,
         ITransactionService transactionService)
     {
         _productRepository = productRepository;
@@ -22,7 +22,7 @@ public class WithdrawTransactionHandler : IRequestHandler<WithdrawTransactionCom
 
         if (product == default)
         {
-            throw new ArgumentException(string.Format("El producto con Id {0} no existe.", request.ProductId));
+            throw new NotFoundException(string.Format("El producto con Id {0} no existe.", request.ProductId));
         }
 
         if (!product.isActiveProduct())
@@ -30,7 +30,7 @@ public class WithdrawTransactionHandler : IRequestHandler<WithdrawTransactionCom
             throw new InvalidOperationException(string.Format("El producto con Id {0} no esta activo.", request.ProductId));
         }
 
-        product.ValidateTypeForTransaction(_TRANSACTION_TYPE);
+        WithdrawalValidationService.ValidateByProductType(product, _TRANSACTION_TYPE);
 
         double currentBalance = WithdrawalValidationService.ValidateAndReturnCurrentBalance(product.Account.Balance, request.Body.Amount);
 
@@ -42,7 +42,7 @@ public class WithdrawTransactionHandler : IRequestHandler<WithdrawTransactionCom
             Serial = transactionSerial
         };
 
-        await _transactionService.MakeWithdrawal(transaction, currentBalance);
+        await _transactionService.MakeWithdrawal(transaction, product.Account, currentBalance);
 
         return transactionSerial;
     }

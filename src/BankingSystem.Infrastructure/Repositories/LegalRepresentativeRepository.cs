@@ -24,7 +24,7 @@ public class LegalRepresentativeRepository : SqlServerBase<LegalRepresentativeEn
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            throw new InfrastructureException($"Error al intentar crear el representante legal con numero de identificación: {legalRepresentative.IdentificationNumber}, detalle:{ex.Message}");
         }
     }
 }

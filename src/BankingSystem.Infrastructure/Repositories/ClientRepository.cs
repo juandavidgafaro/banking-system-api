@@ -1,6 +1,4 @@
-﻿using BankingSystem.Infrastructure.Interfaces;
-
-namespace BankingSystem.Infrastructure.Repositories;
+﻿namespace BankingSystem.Infrastructure.Repositories;
 public class ClientRepository : SqlServerBase<ClientEntity>, IClientRepository
 {
     public ClientRepository(IOptions<InfrastructureSettings> settings)
@@ -20,15 +18,14 @@ public class ClientRepository : SqlServerBase<ClientEntity>, IClientRepository
                 client.IdentificationNumber,
                 client.IdentificationType,
                 client.PersonType,
-                LegalRepresentativeId = client.LegalRepresentative?.Id,
+                LegalRepresentativeId = client.LegalRepresentative?.Id
             });
 
             return insertionResult;
-
         }
         catch (Exception ex) 
         {
-            throw new Exception(ex.Message);
+            throw new InfrastructureException($"Error al intentar crear el cliente con numero de identificación: {client.IdentificationNumber}, detalle:{ex.Message}");
         }
     }
 
@@ -36,8 +33,15 @@ public class ClientRepository : SqlServerBase<ClientEntity>, IClientRepository
     {
         string sql = sqlstatements.get_client_by_id;
 
-        ClientEntity client = await ExecuteSingleAsync(sql, new { ClientId = id });
+        try
+        {
+            ClientEntity client = await ExecuteSingleAsync(sql, new { ClientId = id });
 
-        return client;
+            return client;
+        }
+        catch(Exception ex)
+        {
+            throw new InfrastructureException($"Error al intentar obtener el cliente con el Id: {id}, detalle:{ex.Message}");
+        }
     }
 }

@@ -19,7 +19,7 @@ public class ProductEntity
         {
             productDomainEntity = new(
                entity.Id,
-               entity.Type,
+               ProductType.FromName(entity.Type),
                ProductStatus.FromName(entity.Status),
                new AccountDomainEntity(
                    entity.AccountId,

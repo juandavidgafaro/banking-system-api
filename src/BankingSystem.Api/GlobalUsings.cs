@@ -25,3 +25,8 @@ global using BankingSystem.Domain.Sevices;
 global using BankingSystem.Infrastructure.Interfaces;
 global using BankingSystem.Infrastructure.Entities;
 global using BankingSystem.Api.Application.Services.Implementations;
+global using BankingSystem.Api.Application.Factories.Implementations;
+global using BankingSystem.Api.Middleware;
+global using BankingSystem.Domain.Strategies.Implementations;
+global using BankingSystem.Infrastructure;
+global using BankingSystem.Infrastructure.Exceptions;

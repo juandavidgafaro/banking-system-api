@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace BankingSystem.Api.Controllers;
+﻿namespace BankingSystem.Api.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-public class ProductTransactionsController : ControllerBase
+public class ProductController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public ProductTransactionsController(IMediator mediator)
+    public ProductController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -38,7 +36,37 @@ public class ProductTransactionsController : ControllerBase
 
 
     /// <summary>
-    /// Permite hacer un deposito por el productId.
+    /// Retorna el saldo promedio por los tipos de producto.
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("AverageBalanceByProductType")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<AverageBalanceByProductTypeQueryResponseDTO>> GetAverageBalance()
+    {
+        AverageBalanceByProductTypeQueryResponseDTO averages = await _mediator.Send(new GetAverageBalanceByProductTypeQuery());
+
+        return Ok(averages);
+    }
+
+    /// <summary>
+    /// Retorna el top 10 de los clientes con mayor saldo por tipo de producto.
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("TopTenClientsByProductBalance")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<AverageBalanceByProductTypeQueryResponseDTO>> GetTopTenClients()
+    {
+        TopTenClientsByProductBalanceQueryDTO topClients = await _mediator.Send(new GetTopTenClientsByProductBalanceQuery());
+
+        return Ok(topClients);
+    }
+
+    /// <summary>
+    /// Permite hacer un deposito por el id del producto.
     /// </summary>
     /// <param name="productId"></param>
     /// <param name="header"></param>
@@ -63,7 +91,7 @@ public class ProductTransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Permite hacer un retiro por el productId.
+    /// Permite hacer un retiro por el por el id del producto.
     /// </summary>
     /// <param name="productId"></param>
     /// <param name="header"></param>
@@ -87,9 +115,30 @@ public class ProductTransactionsController : ControllerBase
         return Ok(new TransactionProcesDTO(transactionId));
     }
 
+    /// <summary>
+    /// Permite calcular el interes en un periodo de tiempo.
+    /// </summary>
+    /// <param name="header"></param>
+    /// <param name="calculateInterestRequestDTO"></param>
+    /// <returns></returns>
+    [HttpPost("CalculateInterest")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<double>> CalculateInterest([FromHeaderModel] HeaderRequestModel header, [FromBody] CalculateInterestRequestDTO calculateInterestRequestDTO)
+    {
+        CalculateInterestCommand calculateInterestCommand = new CalculateInterestCommand()
+        {
+            Body = calculateInterestRequestDTO
+        };
+
+        double balanceWithInterest = await _mediator.Send(calculateInterestCommand);
+
+        return Ok(balanceWithInterest);
+    }
 
     /// <summary>
-    /// Permite cancelar un producto por el productId.
+    /// Permite cancelar un producto por el id del producto.
     /// </summary>
     /// <param name="productId"></param>
     /// <param name="header"></param>

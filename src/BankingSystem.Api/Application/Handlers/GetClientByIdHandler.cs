@@ -2,20 +2,20 @@
 
 public class GetClientByIdHandler : IRequestHandler<GetClientByIdQuery, ClientQueryResponseDTO>
 {
-    private readonly IClientRepository _ClientInfrastructureRepository;
+    private readonly IClientRepository _clientRepository;
 
     public GetClientByIdHandler(IClientRepository clientInfrastructureRepository)
     {
-        _ClientInfrastructureRepository = clientInfrastructureRepository;
+        _clientRepository = clientInfrastructureRepository;
     }
 
     public async Task<ClientQueryResponseDTO> Handle(GetClientByIdQuery request, CancellationToken cancellationToken)
     {
-        var clientEntity = await _ClientInfrastructureRepository.GetClientById(request.Id);
+        var clientEntity = await _clientRepository.GetClientById(request.Id);
 
         if (clientEntity == default)
         {
-            throw new ArgumentException(string.Format("El cliente con Id {0} no existe.", request.Id));
+            throw new NotFoundException(string.Format("El cliente con Id {0} no existe.", request.Id));
         }
 
         return new ClientQueryResponseDTO()

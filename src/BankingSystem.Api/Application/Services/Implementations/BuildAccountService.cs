@@ -1,5 +1,5 @@
-﻿namespace BankingSystem.Api.Application.Services;
-public class BuildAccountService
+﻿namespace BankingSystem.Api.Application.Services.Implementations;
+public class BuildAccountService : IBuildAccountService
 {
     private readonly IBankingProductFactoryProvider _bankingProductFactoryProvider;
     private readonly IAccountNumberGeneratorService _accountNumberGeneratorService;

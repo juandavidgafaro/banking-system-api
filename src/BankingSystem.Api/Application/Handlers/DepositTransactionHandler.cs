@@ -3,11 +3,11 @@ public class DepositTransactionHandler : IRequestHandler<DepositTransactionComma
 {
     private readonly TransactionType _TRANSACTION_TYPE = TransactionType.Deposit;
 
-    private readonly IProduct _productRepository;
+    private readonly IProductRepository _productRepository;
     private readonly ITransactionService _transactionService;
 
     public DepositTransactionHandler(
-        IProduct productRepository,
+        IProductRepository productRepository,
         ITransactionService transactionService)
     {
         _productRepository = productRepository;
@@ -24,7 +24,7 @@ public class DepositTransactionHandler : IRequestHandler<DepositTransactionComma
 
         if (product == default)
         {
-            throw new ArgumentException(string.Format("El producto con Id {0} no existe.", request.ProductId));
+            throw new NotFoundException(string.Format("El producto con Id {0} no existe.", request.ProductId));
         }
 
         if (!product.isActiveProduct())
@@ -42,7 +42,7 @@ public class DepositTransactionHandler : IRequestHandler<DepositTransactionComma
             Serial = transactionSerial
         };
 
-        await _transactionService.MakeDeposit(transaction, totalAmount);
+        await _transactionService.MakeDeposit(transaction, product.Account, totalAmount);
 
         return transactionSerial;
     }

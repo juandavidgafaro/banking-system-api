@@ -1,6 +1,4 @@
-﻿using BankingSystem.Infrastructure.Interfaces;
-
-namespace BankingSystem.Infrastructure.Repositories;
+﻿namespace BankingSystem.Infrastructure.Repositories;
 public class AccountRepository : SqlServerBase<AccountEntity>, IAccountRepository
 {
     public AccountRepository(IOptions<InfrastructureSettings> settings)
@@ -26,16 +24,35 @@ public class AccountRepository : SqlServerBase<AccountEntity>, IAccountRepositor
         }
         catch (Exception ex) 
         {
-            throw new Exception(ex.Message);
+            throw new InfrastructureException($"Error al intentar crear la cuenta, detalle:{ex.Message}");
         }        
     }
-    public Task Cancel(DateTime cancellationDate)
+    public async Task Cancel(AccountDomainEntity account)
     {
-        throw new NotImplementedException();
+        string sql = sqlstatements.cancel_account;
+
+        try
+        {
+            await SingleUpdate(sql, new { AccountId = account.Id });
+        }
+        catch (Exception ex)
+        {
+            throw new InfrastructureException($"Error al intentar cancelar la cuenta con numero: {account.Number}, detalle:{ex.Message}");
+        }
+
     }
 
-    public Task ModifyBalance(double currentBalance)
+    public async Task ModifyBalance(AccountDomainEntity account, double currentBalance)
     {
-        throw new NotImplementedException();
+        string sql = sqlstatements.modify_account_balance;
+
+        try
+        {
+            await SingleUpdate(sql, new { AccountId = account.Id, CurrentBalance = currentBalance });
+        }
+        catch (Exception ex)
+        {
+            throw new InfrastructureException($"Error al intentar modificar el saldo de la cuenta con numero: {account.Number}, detalle:{ex.Message}");
+        }
     }
 }

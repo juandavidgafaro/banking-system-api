@@ -3,8 +3,8 @@
 public class HeaderRequestModel
 {
     [FromHeader(Name = "user")]
-    public string User { get; set; }
+    public required string User { get; set; }
 
     [FromHeader(Name = "source")]
-    public string Source { get; set; }
+    public required string Source { get; set; }
 }

@@ -1,14 +1,12 @@
-﻿using BankingSystem.Infrastructure.Interfaces;
-
-namespace BankingSystem.Infrastructure.Services.Implementations;
+﻿namespace BankingSystem.Infrastructure.Services.Implementations;
 public class ProductSevice : IProductSevice
 {
-    private readonly IProduct _productRepository;
+    private readonly IProductRepository _productRepository;
     private readonly IAccountRepository _accountRepository;
     private readonly ITransaction _transactionRepository;
 
     public ProductSevice(
-        IProduct productRepository,
+        IProductRepository productRepository,
         ITransaction transactionRepository,
         IAccountRepository accountRepository)
     {
@@ -30,9 +28,9 @@ public class ProductSevice : IProductSevice
         return productCreated.Id;
     }
 
-    public async Task Cancel(int productId, TransactionDomainEntity transaction)
+    public async Task Cancel(int productId, TransactionDomainEntity transaction, AccountDomainEntity account)
     {
-        await _accountRepository.Cancel(DateTime.Now);
+        await _accountRepository.Cancel(account);
         await _productRepository.CancelProductById(productId);
         await _transactionRepository.Create(transaction);
     }

@@ -3,18 +3,21 @@ public class CancelTransactionHandler : IRequestHandler<CancelTransactionCommand
 {
     private readonly TransactionType _TRANSACTION_TYPE = TransactionType.Cancel;
 
-    private readonly IProduct _productRepository;
+    private readonly IProductRepository _productRepository;
     private readonly ITransaction _transactionRepository;
     private readonly IProductSevice _productSevice;
+    private readonly ITransferBalanceToAnotherAccountService _transferBalanceToAnotherAccountService;
 
     public CancelTransactionHandler(
-        IProduct productRepository,
+        IProductRepository productRepository,
         ITransaction transactionRepository,
-        IProductSevice productSevice)
+        IProductSevice productSevice,
+        ITransferBalanceToAnotherAccountService transferBalanceToAnotherAccountService)
     {
         _productRepository = productRepository;
         _transactionRepository = transactionRepository;
         _productSevice = productSevice;
+        _transferBalanceToAnotherAccountService = transferBalanceToAnotherAccountService;
     }
 
     public async Task<Guid> Handle(CancelTransactionCommand request, CancellationToken cancellationToken)
@@ -25,21 +28,27 @@ public class CancelTransactionHandler : IRequestHandler<CancelTransactionCommand
 
         if (product == default)
         {
-            throw new ArgumentException(string.Format("El producto con Id {0} no existe.", request.ProductId));
+            throw new NotFoundException(string.Format("El producto con Id {0} no existe.", request.ProductId));
         }
 
-        int productIdToCancel = product.ActionsForCancellationProcess(_productRepository, product.Type, product.ClientId);
-
-        if (product.CanBeCanceled)
+        if(!product.isActiveProduct())
         {
+            throw new InvalidOperationException(string.Format("El producto con Id {0} no esta activo", request.ProductId));
+        }
+
+        if (ProductType.CertificateOfDeposit.Equals(product.Type))
+        {
+
+            ProductDomainEntity savingsProduct = product.ValidateProductForTransaction(_productRepository, ProductType.SavingsAccount, product.ClientId, _TRANSACTION_TYPE);
+
             TransactionDomainEntity savingsProductTransaction = new()
             {
                 OriginDate = DateTime.Now,
                 Type = TransactionType.Deposit,
-                ProductId = productIdToCancel,
+                ProductId = savingsProduct.Id
             };
 
-            await TransferBalanceToAnotherAccountService.GenerateTransferToSavingsAccount(_transactionRepository, savingsProductTransaction);
+            await _transferBalanceToAnotherAccountService.GenerateTransferToSavingsAccount((savingsProduct, product));
         }
 
         TransactionDomainEntity cancellationTransaction = new()
@@ -49,7 +58,7 @@ public class CancelTransactionHandler : IRequestHandler<CancelTransactionCommand
             ProductId = product.Id,
         };
 
-        await _productSevice.Cancel(productIdToCancel, cancellationTransaction);
+        await _productSevice.Cancel(product.Id, cancellationTransaction, product.Account);
 
         return transactionSerial;
     }

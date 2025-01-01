@@ -6,12 +6,12 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, int>
     private readonly IClientRepository _clientRepository;
     private readonly IBuildAccountService _buildAccountService;
     private readonly IProductSevice _productSevice;
-    private readonly IProduct _product;
+    private readonly Domain.Interfaces.IProduct _product;
 
     public CreateProductHandler(IClientRepository clientRepository, 
         IBuildAccountService buildAccountService, 
-        IProductSevice productSevice, 
-        IProduct product)
+        IProductSevice productSevice,
+        Domain.Interfaces.IProduct product)
     {
         _clientRepository = clientRepository;
         _buildAccountService = buildAccountService;
@@ -32,12 +32,12 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, int>
 
         double monthlyInterestPercentage = request.Body.Product.MonthlyInterestPercentage > 0 ? 
             request.Body.Product.MonthlyInterestPercentage 
-            : ProductTypeInterestRateService.GenerateInterestPercentage(ProductType.FromName(request.Body.Product.Type));
+            : ProductInterestService.GenerateInterestPercentage(ProductType.FromName(request.Body.Product.Type));
 
         ProductDomainEntity product = new(
             _product,
             ProductStatus.Active,
-            request.Body.Product.Type,
+            ProductType.FromName(request.Body.Product.Type),
             request.Body.Product.Client.Id,
             monthlyInterestPercentage,
             account,

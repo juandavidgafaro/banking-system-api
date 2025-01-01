@@ -1,6 +1,4 @@
-﻿using BankingSystem.Infrastructure.Interfaces;
-
-namespace BankingSystem.Infrastructure;
+﻿namespace BankingSystem.Infrastructure;
 public static class DependencyContainer
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
@@ -10,7 +8,9 @@ public static class DependencyContainer
         services.AddTransient<IClient, ClientRepository>();
         services.AddTransient<IClientRepository, ClientRepository>();
         services.AddTransient<IProduct, ProductRepository>();
+        services.AddTransient<IProductRepository, ProductRepository>();
         services.AddTransient<IAccount, AccountRepository>();
+        services.AddTransient<IAccountRepository, AccountRepository>();
         services.AddTransient<ILegalRepresentative, LegalRepresentativeRepository>();
         services.AddTransient<ITransaction, TransactionRepository>();
 

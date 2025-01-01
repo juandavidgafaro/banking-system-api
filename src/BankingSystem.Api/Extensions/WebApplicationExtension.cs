@@ -1,9 +1,4 @@
-﻿using BankingSystem.Api.Application.Factories.Implementations;
-using BankingSystem.Api.Middleware;
-using BankingSystem.Domain.Strategies.Implementations;
-using BankingSystem.Infrastructure;
-
-namespace BankingSystem.Api.Extensions;
+﻿namespace BankingSystem.Api.Extensions;
 public static class WebApplicationExtension
 {
     public static WebApplication CreateWebApplication(this WebApplicationBuilder builder)
@@ -15,10 +10,10 @@ public static class WebApplicationExtension
         builder.Services.AddCorsExtension();
         builder.Services.AddInfrastructureServices(builder.Configuration);
 
-
         builder.Services.AddTransient<IBankingProductFactoryProvider, BankingProductFactoryProvider>();
         builder.Services.AddTransient<IPhoneNumberValidatorStrategy, PhoneNumberValidatorStrategy>();
-
+        builder.Services.AddTransient<IBuildAccountService, BuildAccountService>();
+        builder.Services.AddTransient<ITransferBalanceToAnotherAccountService, TransferBalanceToAnotherAccountService>();
 
         return builder.Build();
     }
@@ -38,7 +33,10 @@ public static class WebApplicationExtension
         app.UseMiddleware<ErrorHandlerMiddleware>(new Dictionary<Type, IExceptionHandler>
             {
                 {typeof(BadRequestException), new BadRequestExceptionHandler() },
-                {typeof(DomainException), new DomainExceptionHandler() }
+                {typeof(InvalidOperationException), new InvalidOperationExceptionHandler() },
+                {typeof(DomainException), new DomainExceptionHandler() },
+                {typeof(InfrastructureException), new InfrastructureExceptionHandler() },
+                {typeof(NotFoundException), new NotFoundExceptionHandler() }
             }
         );
         return app;

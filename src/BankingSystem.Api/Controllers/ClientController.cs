@@ -1,7 +1,4 @@
-﻿using BankingSystem.Api.Application.Commands;
-using BankingSystem.Api.Application.Queries;
-
-namespace BankingSystem.Api.Controllers;
+﻿namespace BankingSystem.Api.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
@@ -43,7 +40,7 @@ public class ClientController : ControllerBase
     /// <param name="clientId"></param>
     /// <returns>Retorna la información del cliente.</returns>
     [HttpGet("{clientId}")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ClientQueryResponseDTO>> GetClientById(int clientId)
@@ -54,6 +51,4 @@ public class ClientController : ControllerBase
 
         return Ok(clientDTO);
     }
-
-
 }

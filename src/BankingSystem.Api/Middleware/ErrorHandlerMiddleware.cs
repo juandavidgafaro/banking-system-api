@@ -16,6 +16,7 @@ public class ErrorHandlerMiddleware(
     {
         HeaderRequestModel headerRequestModel = new()
         {
+            User = context.Request.Headers["user"].FirstOrDefault() ?? string.Empty,
             Source = context.Request.Headers["source"].FirstOrDefault() ?? string.Empty,
         };
 
