@@ -6,39 +6,40 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, int>
     private readonly IClientRepository _clientRepository;
     private readonly IBuildAccountService _buildAccountService;
     private readonly IProductSevice _productSevice;
-    private readonly Domain.Interfaces.IProduct _product;
+    private readonly IProductRepository _productRepository;
 
     public CreateProductHandler(IClientRepository clientRepository, 
         IBuildAccountService buildAccountService, 
         IProductSevice productSevice,
-        Domain.Interfaces.IProduct product)
+        IProductRepository product)
     {
         _clientRepository = clientRepository;
         _buildAccountService = buildAccountService;
         _productSevice = productSevice;
-        _product = product;
+        _productRepository = product;
     }
 
     public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        ClientEntity client = await _clientRepository.GetClientById(request.Body.Product.Client.Id);
+        ClientEntity client = await _clientRepository.GetClientById(request.Body.ClientId);
 
         if (client == default)
         {
-            throw new ArgumentException(string.Format("El cliente con Id {0} no existe.", request.Body.Product.Client.Id));
+            throw new NotFoundException(string.Format("El cliente con Id {0} no existe.", request.Body.ClientId));
         }
 
-        AccountDomainEntity account = _buildAccountService.BuildByProductType(request.Body.Product.Type, (request.Body.Product.MoneyForAccount, request.Body.Product.TermMonths));
+        AccountDomainEntity account = _buildAccountService.BuildByProductType(request.Body.Type, (request.Body.InitialBalance, request.Body.TermMonths));
 
-        double monthlyInterestPercentage = request.Body.Product.MonthlyInterestPercentage > 0 ? 
-            request.Body.Product.MonthlyInterestPercentage 
-            : ProductInterestService.GenerateInterestPercentage(ProductType.FromName(request.Body.Product.Type));
+        double monthlyInterestPercentage = request.Body.MonthlyInterestPercentage > 0 ? 
+            request.Body.MonthlyInterestPercentage 
+            : ProductInterestService.GenerateInterestPercentage(ProductType.FromName(request.Body.Type));
 
         ProductDomainEntity product = new(
-            _product,
+            _productRepository,
             ProductStatus.Active,
-            ProductType.FromName(request.Body.Product.Type),
-            request.Body.Product.Client.Id,
+            ProductType.FromName(request.Body.Type),
+            request.Body.ClientId,
+            request.Body.TermMonths,
             monthlyInterestPercentage,
             account,
             _TRANSACTION_TYPE

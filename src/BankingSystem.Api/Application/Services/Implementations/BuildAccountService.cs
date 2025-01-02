@@ -4,6 +4,8 @@ public class BuildAccountService : IBuildAccountService
     private readonly IBankingProductFactoryProvider _bankingProductFactoryProvider;
     private readonly IAccountNumberGeneratorService _accountNumberGeneratorService;
 
+    private readonly int TERM_MONTH_DEFAULT = 0;
+
     public BuildAccountService(IBankingProductFactoryProvider bankingProductFactoryProvider, IAccountNumberGeneratorService accountNumberGeneratorService)
     {
         _bankingProductFactoryProvider = bankingProductFactoryProvider;
@@ -21,6 +23,8 @@ public class BuildAccountService : IBuildAccountService
         {
             accounDetails = productFartory.CreateAccount(_accountNumberGeneratorService, initialData.Balance);
 
+            ValidateTermMonth(initialData.TermMonth, ProductType.FromName(productType));
+
             account = new(
                 accounDetails.GetNumber(),
                 accounDetails.GetBalance(),
@@ -37,5 +41,13 @@ public class BuildAccountService : IBuildAccountService
         }
 
         return account;
+    }
+
+    private void ValidateTermMonth(int termMonth, ProductType productType)
+    {
+        if (termMonth <= TERM_MONTH_DEFAULT && productType.Equals(ProductType.CertificateOfDeposit))
+        {
+            throw new InvalidOperationException($"Los meses de permanencia para la cuenta deben ser mayores a {termMonth}");
+        }
     }
 }

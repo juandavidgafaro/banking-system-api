@@ -90,18 +90,21 @@ namespace BankingSystem.Infrastructure.Resources {
         ///P.ProductId AS Id,
         ///P.Type AS Type,
         ///P.Status AS Status,
-        ///A.Number AS AccountNumber,
         ///P.MonthlyInterestPercentage AS MonthlyInterestPercentage,
         ///P.TermMonths AS TermMonths,
-        ///A.Balance AS AccountBalance,
-        ///P.ClientId AS ClientId,
-        ///P.AccountId AS AccountId
+        ///C.ClientId AS ClientId,
+        ///C.Name AS ClientName,
+        ///C.IdentificationNumber AS ClientIdentificationNumber,
+        ///C.IdentificationType AS ClientIdentificationType,
+        ///C.PersonType AS ClientPersonType,
+        ///C.Country AS ClientCountry,
+        ///A.AccountId AS AccountId,
+        ///A.Number AS AccountNumber,
+        ///A.Balance AS AccountBalance
         ///FROM 
         ///Product P
         ///JOIN 
-        ///Account A ON P.AccountId = A.AccountId
-        ///WHERE 
-        ///P.Type = @ProductType;.
+        ///Client C ON P.ClientId = C.Cli [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string get_all_products_by_type {
             get {
@@ -116,6 +119,7 @@ namespace BankingSystem.Infrastructure.Resources {
         ///    IdentificationNumber, 
         ///    IdentificationType, 
         ///    PersonType, 
+        ///    Country,
         ///    LegalRepresentativeId
         ///FROM Client
         ///WHERE ClientId = @ClientId;.
@@ -131,18 +135,21 @@ namespace BankingSystem.Infrastructure.Resources {
         ///P.ProductId AS Id,
         ///P.Type AS Type,
         ///P.Status AS Status,
-        ///A.Number AS AccountNumber,
         ///P.MonthlyInterestPercentage AS MonthlyInterestPercentage,
         ///P.TermMonths AS TermMonths,
-        ///A.Balance AS AccountBalance,
-        ///P.ClientId AS ClientId,
-        ///P.AccountId AS AccountId
+        ///C.ClientId AS ClientId,
+        ///C.Name AS ClientName,
+        ///C.IdentificationNumber AS ClientIdentificationNumber,
+        ///C.IdentificationType AS ClientIdentificationType,
+        ///C.PersonType AS ClientPersonType,
+        ///C.Country AS ClientCountry,
+        ///A.AccountId AS AccountId,
+        ///A.Number AS AccountNumber,
+        ///A.Balance AS AccountBalance
         ///FROM 
         ///Product P
         ///JOIN 
-        ///Account A ON P.AccountId = A.AccountId
-        ///WHERE 
-        ///P.Type = @ProductType AND P.ClientId = @ClientId;.
+        ///Client C ON P.ClientId = C.Cli [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string get_product_by_client_and_type {
             get {
@@ -155,18 +162,21 @@ namespace BankingSystem.Infrastructure.Resources {
         ///P.ProductId AS Id,
         ///P.Type AS Type,
         ///P.Status AS Status,
-        ///A.Number AS AccountNumber,
         ///P.MonthlyInterestPercentage AS MonthlyInterestPercentage,
         ///P.TermMonths AS TermMonths,
-        ///A.Balance AS AccountBalance,
-        ///P.ClientId AS ClientId,
-        ///P.AccountId AS AccountId
+        ///C.ClientId AS ClientId,
+        ///C.Name AS ClientName,
+        ///C.IdentificationNumber AS ClientIdentificationNumber,
+        ///C.IdentificationType AS ClientIdentificationType,
+        ///C.PersonType AS ClientPersonType,
+        ///C.Country AS ClientCountry,
+        ///A.AccountId AS AccountId,
+        ///A.Number AS AccountNumber,
+        ///A.Balance AS AccountBalance
         ///FROM 
         ///Product P
         ///JOIN 
-        ///Account A ON P.AccountId = A.AccountId
-        ///WHERE 
-        ///P.ProductId = @ProductId;.
+        ///Client C ON P.ClientId = C.Cli [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string get_product_by_id {
             get {
@@ -211,6 +221,7 @@ namespace BankingSystem.Infrastructure.Resources {
         ///IdentificationNumber, 
         ///IdentificationType,
         ///PersonType, 
+        ///Country, 
         ///LegalRepresentativeId)
         ///OUTPUT 
         ///    INSERTED.ClientId AS Id, 
@@ -218,12 +229,14 @@ namespace BankingSystem.Infrastructure.Resources {
         ///    INSERTED.IdentificationNumber, 
         ///    INSERTED.IdentificationType, 
         ///    INSERTED.PersonType, 
+        ///    INSERTED.Country, 
         ///    INSERTED.LegalRepresentativeId
         ///VALUES 
         ///(@Name,
         ///@IdentificationNumber, 
         ///@IdentificationType, 
         ///@PersonType, 
+        ///@Country, 
         ///@LegalRepresentativeId);
         ///.
         /// </summary>
@@ -238,17 +251,20 @@ namespace BankingSystem.Infrastructure.Resources {
         ///(Name, 
         ///IdentificationNumber, 
         ///IdentificationType, 
+        ///Country,
         ///Phone) 
         ///OUTPUT 
         ///    INSERTED.LegalRepresentativeId AS Id, 
         ///    INSERTED.Name, 
         ///    INSERTED.IdentificationNumber, 
         ///    INSERTED.IdentificationType, 
+        ///    INSERTED.Country, 
         ///    INSERTED.Phone
         ///VALUES 
         ///(@Name, 
         ///@IdentificationNumber, 
         ///@IdentificationType,
+        ///@Country,
         ///@Phone);
         ///.
         /// </summary>
@@ -259,7 +275,28 @@ namespace BankingSystem.Infrastructure.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a INSERT INTO Product 
+        ///   Busca una cadena traducida similar a --﻿INSERT INTO Product 
+        ///--(Type, 
+        ///--Status, 
+        ///--MonthlyInterestPercentage, 
+        ///--TermMonths, 
+        ///--DateLastModification, 
+        ///--ClientId, 
+        ///--AccountId)
+        ///--VALUES 
+        ///--(@ProductType, 
+        ///--@ProductStatus, 
+        ///--@MonthlyInterestPercentage, 
+        ///--@TermMonths,
+        ///--GETDATE(), 
+        ///--@ClientId, 
+        ///--@AccountId);
+        ///
+        ///--SELECT SCOPE_IDENTITY();
+        ///
+        ///DECLARE @Id INT;
+        ///
+        ///INSERT INTO Product 
         ///(Type, 
         ///Status, 
         ///MonthlyInterestPercentage, 
@@ -267,24 +304,9 @@ namespace BankingSystem.Infrastructure.Resources {
         ///DateLastModification, 
         ///ClientId, 
         ///AccountId)
-        ///OUTPUT 
-        ///    INSERTED.ProductId AS Id, 
-        ///    INSERTED.Type, 
-        ///    INSERTED.Status, 
-        ///    INSERTED.MonthlyInterestPercentage, 
-        ///    INSERTED.TermMonths, 
-        ///    INSERTED.DateLastModification, 
-        ///    INSERTED.ClientId, 
-        ///    INSERTED.AccountId
         ///VALUES 
         ///(@ProductType, 
-        ///@ProductStatus, 
-        ///@MonthlyInterestPercentage, 
-        ///@TermMonths,
-        ///GETDATE(), 
-        ///@ClientId, 
-        ///@AccountId);
-        ///.
+        ///@ProductS [resto de la cadena truncado]&quot;;.
         /// </summary>
         internal static string insert_product {
             get {

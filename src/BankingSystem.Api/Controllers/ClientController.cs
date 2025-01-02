@@ -12,16 +12,16 @@ public class ClientController : ControllerBase
     }
 
     /// <summary>
-    /// Permirte crear un cliente.
+    /// Permirte crear un cliente y retorna su Id.
     /// </summary>
     /// <param name="header"></param>
     /// <param name="createClientDTO"></param>
-    /// <returns>Retorna el Id del cliente creado.</returns>
+    /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<int>> Post([FromHeaderModel] HeaderRequestModel header, [FromBody] CreateClientDTO createClientDTO)
+    public async Task<ActionResult<int>> Post([FromHeaderModel] HeaderRequestModel header, [FromBody] CreateClientRequestDTO createClientDTO)
     {
         CreateClientCommand createClientCommand = new()
         {

@@ -4,6 +4,7 @@
     IdentificationNumber, 
     IdentificationType, 
     PersonType, 
+    Country,
     LegalRepresentativeId
 FROM Client
 WHERE ClientId = @ClientId;

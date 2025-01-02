@@ -3,7 +3,7 @@ public class InfrastructureExceptionHandler : ExceptionHandlerBase, IExceptionHa
 {
     public Task Handler(HttpContext context, Exception exception, HeaderRequestModel headerRequestModel)
     {
-        var ex = exception as DomainException;
+        var ex = exception as InfrastructureException;
         return SetResult(context, errorMessage: [ex is not null ? ex.Message : string.Empty], HttpStatusCode.InternalServerError);
     }
 }

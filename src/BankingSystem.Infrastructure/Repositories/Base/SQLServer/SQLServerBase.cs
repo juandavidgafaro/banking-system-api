@@ -7,17 +7,16 @@ public class SqlServerBase<T> where T : class
         ConnectionString = connectionString;
     }
 
-    public async Task<bool> SingleInsert(string sql, object parameters)
+    public async Task<int> SingleInsert(string sql, object parameters)
     {
-        bool isSuccessful;
-
         using (SqlConnection conn = new SqlConnection(ConnectionString))
         {
-            isSuccessful = await conn.ExecuteScalarAsync<bool>(sql, parameters);
+            var insertedId = await conn.ExecuteScalarAsync<int>(sql, parameters);
+            return insertedId;
         }
-
-        return isSuccessful;
     }
+
+
     public async Task<T> SingleInsert<T>(string sql, object parameters)
     {
         using (SqlConnection conn = new SqlConnection(ConnectionString))

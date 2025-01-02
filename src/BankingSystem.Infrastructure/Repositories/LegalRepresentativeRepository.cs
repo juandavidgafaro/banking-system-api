@@ -17,6 +17,7 @@ public class LegalRepresentativeRepository : SqlServerBase<LegalRepresentativeEn
                 legalRepresentative.Name,
                 legalRepresentative.IdentificationNumber,
                 legalRepresentative.IdentificationType,
+                Country = legalRepresentative.Country.Name,
                 legalRepresentative.Phone
             });
 

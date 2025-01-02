@@ -39,7 +39,7 @@ public class CancelTransactionHandler : IRequestHandler<CancelTransactionCommand
         if (ProductType.CertificateOfDeposit.Equals(product.Type))
         {
 
-            ProductDomainEntity savingsProduct = product.ValidateProductForTransaction(_productRepository, ProductType.SavingsAccount, product.ClientId, _TRANSACTION_TYPE);
+            ProductDomainEntity savingsProduct = product.ValidateProductForTransaction(_productRepository, ProductType.SavingsAccount, product.Client.Id, _TRANSACTION_TYPE);
 
             TransactionDomainEntity savingsProductTransaction = new()
             {
@@ -56,6 +56,7 @@ public class CancelTransactionHandler : IRequestHandler<CancelTransactionCommand
             OriginDate = DateTime.Now,
             Type = _TRANSACTION_TYPE,
             ProductId = product.Id,
+            Serial = transactionSerial,
         };
 
         await _productSevice.Cancel(product.Id, cancellationTransaction, product.Account);

@@ -4,8 +4,7 @@ public class BadRequestExceptionHandler : ExceptionHandlerBase, IExceptionHandle
 {
     public Task Handler(HttpContext context, Exception exception, HeaderRequestModel headerRequestModel)
     {
-        BadRequestException? ex = exception as BadRequestException;
-        IEnumerable<string?> errorList = ex is not null ? ex.Errors.Select(x => x.ErrorMessage) : Enumerable.Empty<string?>();
-        return SetResult(context, errorList.ToArray(), HttpStatusCode.BadRequest);
+        var ex = exception as BadRequestException;
+        return SetResult(context, errorMessage: [ex is not null ? ex.Message : string.Empty], HttpStatusCode.BadRequest);
     }
 }

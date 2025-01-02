@@ -7,17 +7,17 @@ public class PhoneNumberValidatorStrategy : IPhoneNumberValidatorStrategy
     {
         _validators = new Dictionary<string, IPhoneNumberValidator>
         {
-            { "Colombia", new ColombiaPhoneNumberValidator() },
+            { Country.Colombia.Name, new ColombiaPhoneNumberValidator() },
         };
     }
 
-    public bool Validate(string country, long phoneNumber)
+    public bool Validate(Country country, long phoneNumber)
     {
-        if (_validators.TryGetValue(country, out var validator))
+        if (_validators.TryGetValue(country.Name, out var validator))
         {
             return validator.IsValid(phoneNumber);
         }
 
-        throw new DomainException($"No se encontró un validador para el país: {country}");
+        throw new DomainException($"No se encontró un validador para el formato del numero celular, por el país: {country.Name}");
     }
 }

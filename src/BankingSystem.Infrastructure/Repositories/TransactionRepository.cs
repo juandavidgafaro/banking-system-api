@@ -12,7 +12,7 @@ public class TransactionRepository : SqlServerBase<TransactionEntity>, ITransact
 
         try
         {
-            bool insertionResult = await SingleInsert(sql, new
+            await SingleInsert(sql, new
             {
                 transaction.OriginDate,
                 Type = transaction.Type.Name,

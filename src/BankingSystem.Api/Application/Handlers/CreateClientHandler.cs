@@ -30,57 +30,39 @@ public class CreateClientHandler : IRequestHandler<CreateClientCommand, int>
 
     public async Task<int> Handle(CreateClientCommand request, CancellationToken cancellationToken)
     {
-        AccountDomainEntity account = _buildAccountService.BuildByProductType(request.Body.Client.Product.Type, (request.Body.Client.Product.MoneyForAccount, request.Body.Client.Product.TermMonths));
-
-        ProductDomainEntity product;
         ClientDomainEntity clientCreated;
 
         ClientDomainEntity client = new(
-            request.Body.Client.Name,
-            request.Body.Client.IdentificationNumber,
-            request.Body.Client.IdentificationType,
-            request.Body.Client.PersonType
+            request.Body.Name,
+            request.Body.IdentificationNumber,
+            request.Body.IdentificationType,
+            PersonType.FromName(request.Body.PersonType),
+            Country.FromName(request.Body.Country)
         );
 
-        double monthlyInterestPercentage = request.Body.Client.Product.MonthlyInterestPercentage > 0 ?
-            request.Body.Client.Product.MonthlyInterestPercentage
-            : ProductInterestService.GenerateInterestPercentage(ProductType.FromName(request.Body.Client.Product.Type));
-
-        if (PersonType.Business.Name == request.Body.Client.PersonType)
-        {
-            LegalRepresentativeDomainEntity legalRepresentative = new(
-            _phoneNumberValidatorStrategy,
-            request.Body.Client.Country,
-            request.Body.Client.LegalRepresentative.Name,
-            request.Body.Client.LegalRepresentative.IdentificationNumber,
-            request.Body.Client.LegalRepresentative.IdentificationType,
-            request.Body.Client.LegalRepresentative.Phone);
-
-            client.LegalRepresentative = legalRepresentative;
-
-            clientCreated = await _clientService.CreateBusinessClient(client);
-        }
-        else
+        if(PersonType.Natural == PersonType.FromName(request.Body.PersonType))
         {
             clientCreated = await _clientService.CreatePersonalClient(client);
+
+            return clientCreated.Id;
         }
 
-        product = new(
-            ProductStatus.Active,
-            ProductType.FromName(request.Body.Client.Product.Type),
-            clientCreated.Id,
-            monthlyInterestPercentage,
-            account,
-            _TRANSACTION_TYPE);
-
-        TransactionDomainEntity transaction = new()
+        if(request.Body.LegalRepresentative == default)
         {
-            OriginDate = DateTime.Now,
-            Type = TransactionType.Create,
-            Serial = Guid.NewGuid()
-        };
+            throw new BadRequestException($"Los datos del representante legal son obligatorios en los clientes tipo: {request.Body.PersonType}");
+        }
 
-        await _productSevice.Create(product, transaction);
+        LegalRepresentativeDomainEntity legalRepresentative = new(
+            _phoneNumberValidatorStrategy,
+            Country.FromName(request.Body.Country),
+            request.Body.LegalRepresentative.Name,
+            request.Body.LegalRepresentative.IdentificationNumber,
+            request.Body.LegalRepresentative.IdentificationType,
+            request.Body.LegalRepresentative.Phone);
+
+        client.LegalRepresentative = legalRepresentative;
+
+        clientCreated = await _clientService.CreateBusinessClient(client);
 
         return clientCreated.Id;
     }

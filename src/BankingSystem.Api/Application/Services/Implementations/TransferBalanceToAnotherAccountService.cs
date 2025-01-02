@@ -1,4 +1,6 @@
-﻿namespace BankingSystem.Api.Application.Services.Implementations;
+﻿using MediatR;
+
+namespace BankingSystem.Api.Application.Services.Implementations;
 public class TransferBalanceToAnotherAccountService : ITransferBalanceToAnotherAccountService
 {
     private readonly ITransactionService _transactionService;
@@ -13,10 +15,17 @@ public class TransferBalanceToAnotherAccountService : ITransferBalanceToAnotherA
         Guid transactionSerial = Guid.NewGuid();
 
         TransactionDomainEntity depositTransaction = BuildTransaction(TransactionType.Deposit, transactionProducts.productDeposit.Id);
-        TransactionDomainEntity withdrawalTransaction = BuildTransaction(TransactionType.Deposit, transactionProducts.productDeposit.Id);
+        TransactionDomainEntity withdrawalTransaction = BuildTransaction(TransactionType.Withdraw, transactionProducts.productDeposit.Id);
 
-        await _transactionService.MakeDeposit(depositTransaction, transactionProducts.productDeposit.Account, transactionProducts.productWithdrawal.Account.Balance);
-        await _transactionService.MakeWithdrawal(withdrawalTransaction, transactionProducts.productWithdrawal.Account, transactionProducts.productWithdrawal.Account.Balance);
+        if (transactionProducts.productWithdrawal.Account.Balance > 0)
+        {
+            double totalAmountDeposit = DepositValidationService.GetTotalAmount(transactionProducts.productDeposit.Account.Balance, transactionProducts.productWithdrawal.Account.Balance);
+            double currentBalanceWithdrawal = WithdrawalValidationService.ValidateAndReturnCurrentBalance(transactionProducts.productWithdrawal.Account.Balance, transactionProducts.productWithdrawal.Account.Balance);
+
+            await _transactionService.MakeDeposit(depositTransaction, transactionProducts.productDeposit.Account, totalAmountDeposit);
+            await _transactionService.MakeWithdrawal(withdrawalTransaction, transactionProducts.productWithdrawal.Account, currentBalanceWithdrawal);
+
+        }
     }
 
     private static TransactionDomainEntity BuildTransaction(TransactionType transactionType, int productId)

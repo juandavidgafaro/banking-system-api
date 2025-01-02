@@ -15,18 +15,19 @@ public class ProductDomainEntity
     public double MonthlyInterestPercentage { get; set; }
     public int TermMonths { get; set; }
     public AccountDomainEntity Account { get; set; }
-    public bool CanBeCanceled { get; private set; }
 
     public ProductDomainEntity(
         int id,
         ProductType type,
         ProductStatus status,
+        ClientDomainEntity client,
         AccountDomainEntity account
         )
     {
         Id = id;
         Type = type;
         Status = status;
+        Client = client;
         Account = account;
     }
 
@@ -50,6 +51,7 @@ public class ProductDomainEntity
         ProductStatus status,
         ProductType productType,
         int clientId,
+        int termMonths,
         double monthlyInterestPercentage,
         AccountDomainEntity account,
         TransactionType transactionType)
@@ -60,6 +62,7 @@ public class ProductDomainEntity
         Type = productType;
         Account = account;
         ClientId = clientId;
+        TermMonths = termMonths;
         MonthlyInterestPercentage = monthlyInterestPercentage;
     }
 
@@ -72,10 +75,17 @@ public class ProductDomainEntity
     {
         ProductDomainEntity product = productRepository.GetSpecificTypeProductByClient(clientId, productType.Name).GetAwaiter().GetResult();
 
-        if (product != default && transactionType.Equals(TransactionType.Create))
+        if (product != default && transactionType.Equals(TransactionType.Create) && product.isActiveProduct())
         {
             throw new DomainException(_EXISTING_PRODUCT_ERROR_MESSAGE);
         }
+
+
+        if (product != default && transactionType.Equals(TransactionType.Cancel) && !product.isActiveProduct())
+        {
+            throw new DomainException(_INVALID_CANCELATION_TRANSACTION);
+        }
+
 
         if (product == default && transactionType.Equals(TransactionType.Cancel))
         {

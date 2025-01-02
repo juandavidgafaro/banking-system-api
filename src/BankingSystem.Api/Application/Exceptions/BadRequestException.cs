@@ -1,6 +1,13 @@
 ﻿namespace BankingSystem.Api.Application.Exceptions;
 
-public class BadRequestException(IEnumerable<ValidationResult> errors) : Exception
+public class BadRequestException : Exception
 {
-    public IEnumerable<ValidationResult> Errors { get; private set; } = errors;
+    public BadRequestException()
+    { }
+    public BadRequestException(string message)
+        : base(message)
+    { }
+    public BadRequestException(string message, Exception innerException)
+        : base(message, innerException)
+    { }
 }

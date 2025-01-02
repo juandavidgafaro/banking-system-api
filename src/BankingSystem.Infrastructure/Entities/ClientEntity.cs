@@ -6,6 +6,7 @@ public class ClientEntity
     public int IdentificationNumber { get; set; }
     public string IdentificationType { get; set; }
     public string PersonType { get; set; }
+    public string Country { get; set; }
     public int? LegalRepresentativeId { get; set; }
 
 
@@ -20,7 +21,8 @@ public class ClientEntity
                 entity.Name,
                 entity.IdentificationNumber,
                 entity.IdentificationType,
-                entity.PersonType
+                Domain.Enums.PersonType.FromName(entity.PersonType),
+                Domain.Enums.Country.FromName(entity.Country)
             );
         }
 

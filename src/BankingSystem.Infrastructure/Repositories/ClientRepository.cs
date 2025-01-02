@@ -17,7 +17,8 @@ public class ClientRepository : SqlServerBase<ClientEntity>, IClientRepository
                 client.Name,
                 client.IdentificationNumber,
                 client.IdentificationType,
-                client.PersonType,
+                PersonType = client.PersonType.Name,
+                Country = client.Country.Name,
                 LegalRepresentativeId = client.LegalRepresentative?.Id
             });
 

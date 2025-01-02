@@ -12,9 +12,9 @@ public class ProductRepository : SqlServerBase<ProductEntity>, IProductRepositor
 
         try
         {
-            ProductEntity insertionResult = await SingleInsert<ProductEntity>(sql, new
+            int productId = await SingleInsert(sql, new
             {
-                ProductType = product.Type,
+                ProductType = product.Type.Name,
                 ProductStatus = product.Status.Name,
                 product.MonthlyInterestPercentage,
                 product.TermMonths,
@@ -22,11 +22,14 @@ public class ProductRepository : SqlServerBase<ProductEntity>, IProductRepositor
                 AccountId = product.Account.Id
             });
 
-            return insertionResult;
+
+            ProductDomainEntity productCreated = await GetProductById(productId);
+
+            return productCreated;
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            throw new InfrastructureException($"Error al intentar crear el producto para el cliente Id: {product.ClientId}, detalle:{ex.Message}");
         }
     }
 

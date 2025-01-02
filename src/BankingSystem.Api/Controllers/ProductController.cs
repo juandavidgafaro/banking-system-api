@@ -12,16 +12,16 @@ public class ProductController : ControllerBase
     }
 
     /// <summary>
-    /// Permite crear un producto.
+    /// Permite crear un producto y retorna su Id.
     /// </summary>
     /// <param name="header"></param>
     /// <param name="createProductDTO"></param>
-    /// <returns>Retorna el Id del producto creado.</returns>
+    /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<int>> CreateProduct([FromHeaderModel] HeaderRequestModel header, [FromBody] CreateProductDTO createProductDTO)
+    public async Task<ActionResult<int>> CreateProduct([FromHeaderModel] HeaderRequestModel header, [FromBody] CreateProductRequestDto createProductDTO)
     {
         CreateProductCommand createProductCommand = new CreateProductCommand()
         {
@@ -58,7 +58,7 @@ public class ProductController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<AverageBalanceByProductTypeQueryResponseDTO>> GetTopTenClients()
+    public async Task<ActionResult<TopTenClientsByProductBalanceQueryDTO>> GetTopTenClients()
     {
         TopTenClientsByProductBalanceQueryDTO topClients = await _mediator.Send(new GetTopTenClientsByProductBalanceQuery());
 

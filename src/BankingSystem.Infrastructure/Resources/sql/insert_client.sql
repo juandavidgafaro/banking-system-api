@@ -3,6 +3,7 @@
 IdentificationNumber, 
 IdentificationType,
 PersonType, 
+Country, 
 LegalRepresentativeId)
 OUTPUT 
     INSERTED.ClientId AS Id, 
@@ -10,10 +11,12 @@ OUTPUT
     INSERTED.IdentificationNumber, 
     INSERTED.IdentificationType, 
     INSERTED.PersonType, 
+    INSERTED.Country, 
     INSERTED.LegalRepresentativeId
 VALUES 
 (@Name,
 @IdentificationNumber, 
 @IdentificationType, 
 @PersonType, 
+@Country, 
 @LegalRepresentativeId);

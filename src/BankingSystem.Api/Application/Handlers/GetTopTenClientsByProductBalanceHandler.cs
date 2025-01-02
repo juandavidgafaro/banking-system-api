@@ -47,7 +47,8 @@ public class GetTopTenClientsByProductBalanceHandler : IRequestHandler<GetTopTen
                 Name = client.Name,
                 IdentificationNumber = client.IdentificationNumber,
                 IdentificationType = client.IdentificationType,
-                PersonType = client.PersonType
+                PersonType = client.PersonType,
+                Country = client.Country,
             };
             clientDTOs.Add(clientDTO);
         }
