@@ -1,0 +1,16 @@
+﻿global using BankingSystem.Api.Application.Commands;
+global using BankingSystem.Api.Application.Handlers;
+global using BankingSystem.Domain.Enums;
+global using Moq;
+global using BankingSystem.Api.Application.DTOs;
+global using BankingSystem.Domain.Sevices;
+global using BankingSystem.Api.Application.Services;
+global using BankingSystem.Domain.Entities;
+global using BankingSystem.Infrastructure.Entities;
+global using BankingSystem.Infrastructure.Exceptions;
+global using BankingSystem.Infrastructure.Interfaces;
+global using BankingSystem.Infrastructure.Services;
+global using BankingSystem.Api.Application.Factories;
+global using BankingSystem.Domain.Strategies;
+global using BankingSystem.Api.Application.Exceptions;
+global using BankingSystem.Api.Application.Queries;
